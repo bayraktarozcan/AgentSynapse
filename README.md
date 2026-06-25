@@ -12,8 +12,8 @@
 
 **450+ curated AI agent skills** from 34 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
 
-[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/anomalyco/agent-skills-project)
-[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/anomalyco/agent-skills-project)
+[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/agent-skills-project)
+[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/agent-skills-project)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 
@@ -22,11 +22,14 @@
 ## Quickstart
 
 ```bash
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 
 # Recommended -- 450+ curated skills (default)
 python skills.py
+
+# Or if Python 3 is installed as python3:
+python3 skills.py
 
 # Full trusted suite (K1-K8)
 python skills.py trusted
@@ -105,6 +108,9 @@ python skills.py K2 K4 K6    # AI + Frontend + Security
 | `--gui` | Launch graphical interface |
 | `--lang tr` | Force Turkish language |
 | `--lang en` | Force English |
+| `--dry-run` | Preview repos without installing |
+| `--prefix PATH` | Custom install directory |
+| `--uninstall` | Remove all installed skills |
 | `--list` | List available categories |
 | `--show-config` | Dump repo registry as JSON |
 | `--version` | Show version |
@@ -154,7 +160,7 @@ git clone --depth 1 <repo> -> parse SKILL.md frontmatter -> deduplicate -> copy 
 
 1. **Clone** -- each repo is shallow-cloned to a temp directory.
 2. **Parse** -- every `SKILL.md` is read for its `name:` field and subdirectory path.
-3. **Deduplicate** -- if two repos share a skill name, the higher-category (lower K number) copy wins.
+3. **Deduplicate** -- if two repos share a skill name, the higher-category (higher K number) copy wins.
 4. **Install** -- skills land in `~/.agents/skills/<name>/SKILL.md`.
 
 ---
@@ -173,7 +179,7 @@ agent-skills-project/
 +-- LICENSE              # MIT License
 +-- Legacy/              # Archived files from earlier project versions (skills.ps1, karar.md)
 +-- Logs/                # Timestamped install logs (auto-generated)
-+-- tree.txt             # Directory tree per run (auto-generated)
++-- skills-tree_*.txt    # Timestamped directory tree per run (auto-generated)
 +-- .github/             # Issue templates, funding, dependabot
 ```
 
@@ -183,7 +189,7 @@ agent-skills-project/
 
 ```bash
 # Clone repo
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 
 # Run regression
@@ -222,8 +228,8 @@ MIT -- see [LICENSE](LICENSE).
 
 ## Community
 
-- [Issues](https://github.com/anomalyco/agent-skills-project/issues) -- bugs, feature requests, questions.
-- [Discussions](https://github.com/anomalyco/agent-skills-project/discussions) -- ideas, showcase, help.
+- [Issues](https://github.com/bayraktarozcan/agent-skills-project/issues) -- bugs, feature requests, questions.
+- [Discussions](https://github.com/bayraktarozcan/agent-skills-project/discussions) -- ideas, showcase, help.
 
 Built for the AI agent community.
 
@@ -236,8 +242,8 @@ Built for the AI agent community.
 
 **450'den fazla küratörlü AI ajan becerisi**, 34 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
 
-[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/anomalyco/agent-skills-project)
-[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/anomalyco/agent-skills-project)
+[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/agent-skills-project)
+[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/agent-skills-project)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 
@@ -246,11 +252,14 @@ Built for the AI agent community.
 ## Hızlı Başlangıç
 
 ```bash
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 
 # Önerilen -- 450+ küratörlü beceri (varsayılan)
 python skills.py
+
+# Veya Python 3, python3 olarak yüklendiyse:
+python3 skills.py
 
 # Tam güvenli suite (K1-K8)
 python skills.py trusted
@@ -323,6 +332,9 @@ python skills.py K10         # Risk (opsiyonel)
 | `--gui` | Grafik arayüzü başlat |
 | `--lang tr` | Türkçe'yi zorla |
 | `--lang en` | İngilizce'yi zorla |
+| `--dry-run` | Repoları kurmadan önizle |
+| `--prefix PATH` | Özel kurulum dizini |
+| `--uninstall` | Tüm becerileri kaldır |
 | `--list` | Kategorileri listele |
 | `--show-config` | Repo kaydını JSON olarak göster |
 | `--version` | Sürümü göster |
@@ -372,7 +384,7 @@ git clone --depth 1 <repo> -> SKILL.md ön yüzünü ayrıştır -> tekrarları 
 
 1. **Klonla** -- her depo geçici dizine --depth 1 ile klonlanır.
 2. **Ayrıştır** -- her SKILL.md dosyasının `name:` alanı ve alt dizin yolu okunur.
-3. **Tekrarları temizle** -- iki depo aynı beceri adına sahipse, üst kategorideki (düşük K) kazanır.
+3. **Tekrarları temizle** -- iki depo aynı beceri adına sahipse, üst kategorideki (yüksek K) kazanır.
 4. **Kur** -- beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kopyalanır.
 
 ---
@@ -391,7 +403,7 @@ agent-skills-project/
 +-- LICENSE              # MIT Lisansı
 +-- Legacy/              # Önceki proje sürümlerinden arşiv dosyaları (skills.ps1, karar.md)
 +-- Logs/                # Zaman damgalı kurulum günlükleri (otomatik)
-+-- tree.txt             # Çalıştırma başına klasör ağacı (otomatik)
++-- skills-tree_*.txt    # Çalıştırma başına zaman damgalı klasör ağacı (otomatik)
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```
 
@@ -401,7 +413,7 @@ agent-skills-project/
 
 ```bash
 # Depoyu klonla
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 
 # Regresyon testi
@@ -440,8 +452,8 @@ MIT -- detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
 ## Topluluk
 
-- [Sorunlar](https://github.com/anomalyco/agent-skills-project/issues) -- hatalar, özellik talepleri, sorular.
-- [Tartışmalar](https://github.com/anomalyco/agent-skills-project/discussions) -- fikirler, vitrin, yardım.
+- [Sorunlar](https://github.com/bayraktarozcan/agent-skills-project/issues) -- hatalar, özellik talepleri, sorular.
+- [Tartışmalar](https://github.com/bayraktarozcan/agent-skills-project/discussions) -- fikirler, vitrin, yardım.
 
 AI ajan topluluğu için üretilmiştir.
 

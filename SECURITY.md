@@ -21,7 +21,7 @@
 If you discover a security vulnerability in the Agent Skills Project, please report it privately:
 
 1. **DO NOT** open a public GitHub issue.
-2. Open a [GitHub Security Advisory](https://github.com/anomalyco/agent-skills-project/security/advisories/new).
+2. Open a [GitHub Security Advisory](https://github.com/bayraktarozcan/agent-skills-project/security/advisories/new).
 
 You should receive a response within **48 hours**. If you don't, please follow up.
 
@@ -75,7 +75,7 @@ When adding a new repository to the ecosystem, assess:
 Agent Beceri Projesi'nde bir güvenlik açığı keşfederseniz, lütfen özel olarak bildirin:
 
 1. **Herkese açık** bir GitHub sorunu açmayın.
-2. GitHub Güvenlik Danışmanlığı açın.
+2. [GitHub Güvenlik Danışmanlığı](https://github.com/bayraktarozcan/agent-skills-project/security/advisories/new) açın.
 
 **48 saat** içinde yanıt almalısınız.
 

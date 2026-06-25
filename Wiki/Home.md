@@ -13,7 +13,7 @@ This project aggregates **450+ SKILL.md files** from **48 top-tier repositories*
 ### Quick Start
 
 ```bash
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 python skills.py
 ```
@@ -60,7 +60,7 @@ Bu proje, **48 üst düzey depodan 450+ SKILL.md dosyasını** **10 işlevsel ka
 ### Hızlı Başlangıç
 
 ```bash
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 python skills.py
 ```

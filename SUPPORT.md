@@ -20,7 +20,7 @@
 
 ### Bug Reports
 
-Open a [GitHub Issue](https://github.com/anomalyco/agent-skills-project/issues/new?template=bug_report.md).
+Open a [GitHub Issue](https://github.com/bayraktarozcan/agent-skills-project/issues/new?template=bug_report.md).
 
 Include:
 - What you ran (full command).
@@ -30,12 +30,12 @@ Include:
 
 ### Feature Requests
 
-Open a [Feature Request](https://github.com/anomalyco/agent-skills-project/issues/new?template=feature_request.md).
+Open a [Feature Request](https://github.com/bayraktarozcan/agent-skills-project/issues/new?template=feature_request.md).
 
 ### Discussions
 
 For questions, ideas, and community support:
-[GitHub Discussions](https://github.com/anomalyco/agent-skills-project/discussions)
+[GitHub Discussions](https://github.com/bayraktarozcan/agent-skills-project/discussions)
 
 ### Security Issues
 
@@ -81,7 +81,7 @@ Skills persist until you reinstall.
 
 ### Hata Bildirimleri
 
-GitHub Sorunu açın.
+[GitHub Sorunu](https://github.com/bayraktarozcan/agent-skills-project/issues/new?template=bug_report.md) açın.
 
 ŞUNLARI EKLEYİN:
 - Çalıştırdığınız komut (tam hali).
@@ -91,7 +91,7 @@ GitHub Sorunu açın.
 
 ### Özellik Talepleri
 
-GitHub Özellik Talebi açın.
+[GitHub Özellik Talebi](https://github.com/bayraktarozcan/agent-skills-project/issues/new?template=feature_request.md) açın.
 
 ### Tartışmalar
 

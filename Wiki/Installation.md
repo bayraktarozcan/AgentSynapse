@@ -19,7 +19,7 @@
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 ```
 
@@ -125,7 +125,7 @@ Each subdirectory should contain at least one `SKILL.md` file.
 ### 1. Depoyu klonlayın
 
 ```bash
-git clone https://github.com/anomalyco/agent-skills-project.git
+git clone https://github.com/bayraktarozcan/agent-skills-project.git
 cd agent-skills-project
 ```
 

@@ -10,6 +10,9 @@ Usage:
   python skills.py K1                      Install a single category
   python skills.py --gui                   Launch graphical interface
   python skills.py --lang tr               Force Turkish language
+  python skills.py --dry-run               Preview repos without installing
+  python skills.py --prefix PATH           Install to custom directory
+  python skills.py --uninstall             Remove all installed skills
   python skills.py --list                  List available categories
   python skills.py --help                  Show this help
 """
@@ -102,6 +105,15 @@ S: dict[str, dict[str, str]] = {
         "gui_trusted_hint": "Trusted — K1-K8",
         "gui_all_hint": "All — K1-K10",
         "gui_lang_toggle": "Türkçe",
+        "dry_run": "Preview repos without installing",
+        "prefix": "Custom install directory",
+        "uninstall": "Remove all installed skills",
+        "uninstall_confirm": "WARNING: This will delete",
+        "uninstall_done": "Skills uninstalled successfully",
+        "uninstall_cancel": "Uninstall cancelled",
+        "python_version": "Python 3.8 or later is required. Found:",
+        "installing": "installing...",
+        "proceed": "Proceed? (y/N):",
     },
     "tr": {
         "app_name": "Agent Beceri Projesi",
@@ -173,6 +185,15 @@ S: dict[str, dict[str, str]] = {
         "gui_trusted_hint": "Güvenli — K1-K8",
         "gui_all_hint": "Tümü — K1-K10",
         "gui_lang_toggle": "English",
+        "dry_run": "Repolari kurmadan onizle",
+        "prefix": "Ozel kurulum dizini",
+        "uninstall": "Yuklenmis tum becerileri kaldir",
+        "uninstall_confirm": "UYARI: Bu islem su klasoru silecek",
+        "uninstall_done": "Beceriler basariyla kaldirildi",
+        "uninstall_cancel": "Kaldirma iptal edildi",
+        "python_version": "Python 3.8 veya ustu gerekli. Bulunan:",
+        "installing": "yukleniyor...",
+        "proceed": "Devam edilsin mi? (y/N):",
     },
 }
 
@@ -656,6 +677,38 @@ def _copy_recursive(src: Path, dst: Path) -> None:
 
 # ─────────────────────────────── INSTALL FROM LIST ───────────────────────────────
 
+def _check_git(lang: str) -> bool:
+    try:
+        result = subprocess.run(
+            ["git", "--version"], capture_output=True, text=True, timeout=30
+        )
+        return result.returncode == 0
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return False
+
+
+def _dry_run_list(target: str, lang: str) -> None:
+    rows = list_repos(target, lang)
+    if not rows:
+        print(c(f"  [{_('warn', lang)}] No repos found for '{target}'.", "yellow"))
+        return
+    cat_map: dict[str, list[str]] = {}
+    skill_est = 0
+    for cat_id, cat_name, cat_color, repo, subpath in rows:
+        cat_map.setdefault(f"{cat_id} — {cat_name}", []).append(repo + (f" ({_('subpath', lang)}: {subpath})" if subpath else ""))
+        skill_est += 10
+    print(c(f"\n  [{_('dry_run', lang).upper()}]", "white"))
+    print(c("=" * 55, "white"))
+    for cat_header, repos_list in cat_map.items():
+        print(c(f"  {cat_header}", "cyan"))
+        for r in repos_list:
+            print(f"    {r}")
+        print()
+    print(c(f"  {_('total', lang)}: {len(rows)} {_('dry_run', lang)}", "white"))
+    print(c(f"  ~{skill_est} {_('skills_extracted', lang)}", "white"))
+    print()
+
+
 def install(
     target: str, lang: str
 ) -> tuple[int, int, int]:
@@ -669,6 +722,12 @@ def install(
         print(c(f"  [{_('warn', lang)}] No repos found for '{target}'.", "yellow"))
         return 0, 0, 0
 
+    if not _check_git(lang):
+        print(c(f"  [{_('error', lang)}] git {_('not_found', lang)}", "red"))
+        return 0, 0, 0
+
+    total_rows = len(rows)
+
     prev_id = ""
     prev_name = ""
     prev_color = ""
@@ -678,7 +737,7 @@ def install(
     total_fail = 0
     total_fixes = 0
 
-    for cat_id, cat_name, cat_color, repo, subpath in rows:
+    for idx, (cat_id, cat_name, cat_color, repo, subpath) in enumerate(rows, 1):
         if cat_id != prev_id:
             if prev_id:
                 col = color_for_cat(prev_id)
@@ -704,7 +763,7 @@ def install(
 
         print(
             c(
-                f"  [{_('process', lang)}] {repo}"
+                f"  [{idx}/{total_rows}] {repo}"
                 + (f" -> {_('subpath', lang)} '{subpath}'" if subpath else ""),
                 "blue",
             )
@@ -1069,6 +1128,9 @@ def _show_general_help(lang: str) -> None:
     print(f"  {_('options', lang).upper()}:")
     print(f"    --gui       {_('gui', lang)}")
     print(f"    --lang tr   {_('lang', lang)}")
+    print(f"    --dry-run   {_('dry_run', lang)}")
+    print(f"    --prefix PATH {_('prefix', lang)}")
+    print(f"    --uninstall {_('uninstall', lang)}")
     print(f"    --list      {_('list', lang)}")
     print(f"    --show-config {_('show_config', lang)}")
     print(f"    --readme    {_('readme', lang)}")
@@ -1098,6 +1160,9 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("targets", nargs="*", default=[])
     parser.add_argument("--gui", action="store_true")
     parser.add_argument("--lang", choices=["en", "tr"], default=None)
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--prefix", type=str, default=None)
+    parser.add_argument("--uninstall", action="store_true")
     parser.add_argument("--list", action="store_true")
     parser.add_argument("--show-config", action="store_true")
     parser.add_argument("--readme", action="store_true")
@@ -1112,12 +1177,16 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
 
 
 def main() -> None:
+    global SKILLS_DIR, AGENTS_DIR
+
+    if sys.version_info < (3, 8):
+        print(f"Error: {_('python_version', 'en')} {sys.version}")
+        sys.exit(1)
+
     args = _parse_args(sys.argv[1:])
     lang = args.lang or _detect_lang()
 
-    if args.help or (len(sys.argv) == 1 and not args.targets and not args.gui and not args.list and not args.version
-                     and not getattr(args, "show_config", False) and not args.readme and not args.changelog
-                     and not args.conduct and not args.security and not args.support and not args.license):
+    if args.help:
         _show_general_help(lang)
         return
 
@@ -1134,6 +1203,18 @@ def main() -> None:
         print(json.dumps(REPOS, indent=2, ensure_ascii=False))
     elif args.version:
         print(_("version_str", lang))
+    elif args.uninstall:
+        print()
+        print(c(f"  {_('uninstall_confirm', lang)}: {SKILLS_DIR}", "red"))
+        answer = input(c(f"  {_('proceed', lang)} ", "yellow")).strip().lower()
+        if answer in ("y", "yes"):
+            if SKILLS_DIR.is_dir():
+                shutil.rmtree(SKILLS_DIR)
+                print(c(f"  [{_('ok', lang)}] {_('uninstall_done', lang)}", "green"))
+            else:
+                print(c(f"  [{_('warn', lang)}] {SKILLS_DIR} {_('not_found', lang)}", "yellow"))
+        else:
+            print(c(f"  {_('uninstall_cancel', lang)}", "white"))
     else:
         doc_done = False
         for flag_name in ("readme", "changelog", "conduct", "security", "support", "license"):
@@ -1143,7 +1224,7 @@ def main() -> None:
                 break
         if doc_done:
             return
-        setup_logging(lang)
+
         alias_map = {
             "onerilen": "recommended",
             "guvenli": "trusted",
@@ -1151,6 +1232,17 @@ def main() -> None:
             "tum": "all",
         }
         targets = [alias_map.get(t.lower(), t) for t in args.targets] or ["recommended"]
+
+        if args.dry_run:
+            for target in targets:
+                _dry_run_list(target, lang)
+            return
+
+        if args.prefix:
+            SKILLS_DIR = Path(args.prefix).resolve()
+            AGENTS_DIR = SKILLS_DIR.parent
+
+        setup_logging(lang)
         total_ok = 0
         total_fail = 0
         total_fixes = 0
