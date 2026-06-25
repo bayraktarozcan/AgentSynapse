@@ -118,18 +118,18 @@ Third-party contributions, lower GitHub star counts, lesser-known authors. Exclu
 | [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills) | Higgsfield AI skills |
 | [intellectronica/agent-skills](https://github.com/intellectronica/agent-skills) | Intellectronica agent skills |
 | [doany-ai/skills](https://github.com/doany-ai/skills) | DoAny AI skills collection |
-| [nicoalbanese/agent-skills](https://github.com/nicoalbanese/agent-skills) | Albanese agent skills |
-| [milindsoorya/agent-skills](https://github.com/milindsoorya/agent-skills) | Soorya agent skills |
+| [runcomfy-com/skills](https://github.com/runcomfy-com/skills) | RunComfy AI skills |
+| [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | RuFlo experimental skills |
 
 ### K10 — Risk (4 repos — opt-in)
 Experimental, high-risk, or unmaintained repositories. Excluded from all profiles except `all`. Exercise caution.
 
 | Repo | Description |
 |------|-------------|
-| [zaidhany/agent-skills](https://github.com/zaidhany/agent-skills) | Zaidhany agent skills |
-| [shobeir/agent-skills](https://github.com/shobeir/agent-skills) | Shobeir agent skills |
-| [cloudflare/agents](https://github.com/cloudflare/agents) | Cloudflare AI agents |
-| [web-ai-tools/skills](https://github.com/web-ai-tools/skills) | Web AI tools collection |
+| [juliusbrussee/caveman](https://github.com/juliusbrussee/caveman) | Caveman experimental skills |
+| [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | Taste design skill |
+| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | Marketing skills collection |
+| [wshobson/agents](https://github.com/wshobson/agents) | Agent experiments |
 
 </details>
 
@@ -249,17 +249,17 @@ Yazma, dokümantasyon, içerik oluşturma ve yayın platformları.
 | [higgsfield-ai/skills](https://github.com/higgsfield-ai/skills) | Higgsfield AI becerileri |
 | [intellectronica/agent-skills](https://github.com/intellectronica/agent-skills) | Intellectronica ajan becerileri |
 | [doany-ai/skills](https://github.com/doany-ai/skills) | DoAny AI beceri koleksiyonu |
-| [nicoalbanese/agent-skills](https://github.com/nicoalbanese/agent-skills) | Albanese ajan becerileri |
-| [milindsoorya/agent-skills](https://github.com/milindsoorya/agent-skills) | Soorya ajan becerileri |
+| [runcomfy-com/skills](https://github.com/runcomfy-com/skills) | RunComfy AI becerileri |
+| [ruvnet/ruflo](https://github.com/ruvnet/ruflo) | RuFlo deneysel beceriler |
 
 ### K10 — Risk (4 depo — isteğe bağlı)
 Deneysel, yüksek riskli veya bakımı yapılmayan depolar. Yalnızca `tumu` profili dışındaki tüm profillerden hariç tutulur. Dikkatli kullanın.
 
 | Depo | Açıklama |
 |------|----------|
-| [zaidhany/agent-skills](https://github.com/zaidhany/agent-skills) | Zaidhany ajan becerileri |
-| [shobeir/agent-skills](https://github.com/shobeir/agent-skills) | Shobeir ajan becerileri |
-| [cloudflare/agents](https://github.com/cloudflare/agents) | Cloudflare AI ajanları |
-| [web-ai-tools/skills](https://github.com/web-ai-tools/skills) | Web AI araçları koleksiyonu |
+| [juliusbrussee/caveman](https://github.com/juliusbrussee/caveman) | Caveman deneysel beceriler |
+| [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | Taste tasarım becerisi |
+| [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | Pazarlama becerileri koleksiyonu |
+| [wshobson/agents](https://github.com/wshobson/agents) | Ajan deneyleri |
 
 </details>

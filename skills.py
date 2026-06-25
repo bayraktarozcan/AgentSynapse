@@ -322,7 +322,7 @@ REPOS: dict[str, Any] = {
 }
 
 
-# ─────────────────────────────── EMBEDDED DOCS (bilingual) ───────────────────────────────
+# ─────────────────────────────── DOC FILES ON DISK (bilingual) ───────────────────────────────
 
 DOC_FLAGS: dict[str, str] = {
     "readme": "README.md",
@@ -335,7 +335,6 @@ DOC_FLAGS: dict[str, str] = {
 
 
 def _console_utf8() -> None:
-    import sys
     if sys.platform == "win32":
         import ctypes
         k32 = ctypes.windll.kernel32
