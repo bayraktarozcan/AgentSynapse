@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Agent Skills Project — cross-platform skill installer.
+AgentSynapse — cross-platform skill installer.
 CLI + GUI, bilingual (EN/TR), zero external dependencies (stdlib only).
 
 Usage:
@@ -38,7 +38,7 @@ from typing import Any
 
 S: dict[str, dict[str, str]] = {
     "en": {
-        "app_name": "Agent Skills Project",
+        "app_name": "AgentSynapse",
         "desc": "Install curated AI agent skills from GitHub repositories.",
         "recommended": "Recommended",
         "trusted": "Trusted",
@@ -64,7 +64,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Show version",
         "usage": "Usage",
         "examples": "Examples",
-        "version_str": "Agent Skills Project v1.0.0",
+        "version_str": "AgentSynapse v1.0.0",
         "processing": "Processing",
         "cloning": "cloning...",
         "cloned": "cloned",
@@ -95,7 +95,7 @@ S: dict[str, dict[str, str]] = {
         "tree_saved": "Directory tree saved",
         "git_required": "Git is required. Install git and try again.",
         "available_categories": "Available categories",
-        "gui_title": "Agent Skills Project — Skill Installer",
+        "gui_title": "AgentSynapse — Skill Installer",
         "gui_select": "Select categories to install:",
         "gui_install": "Install",
         "gui_cancel": "Cancel",
@@ -256,7 +256,7 @@ def _(key: str, lang: str = "en") -> str:
 
 REPOS: dict[str, Any] = {
     "version": "1.0.0",
-    "description": "Embedded repository registry for Agent Skills Project.",
+    "description": "Embedded repository registry for AgentSynapse.",
     "categories": [
         {
             "id": "K1",

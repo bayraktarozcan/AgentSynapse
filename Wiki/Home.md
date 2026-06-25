@@ -1,4 +1,4 @@
-# Agent Skills Project
+# AgentSynapse
 
 | <kbd>[🇬🇧 **English**](#en)</kbd> | <kbd>[🇹🇷 **Türkçe**](#tr)</kbd> |
 
@@ -6,15 +6,15 @@
 <details open>
 <summary>English</summary>
 
-Welcome to the **Agent Skills Project** wiki.
+Welcome to the **AgentSynapse** wiki.
 
 This project aggregates **450+ SKILL.md files** from **48 top-tier repositories** across **10 functional categories** (K1–K10). It provides a unified, cross-platform Python installer (`skills.py`) that clones all repos, extracts every SKILL.md, deduplicates, and organizes them into `~/.agents/skills/` — ready for discovery by Claude Code, OpenCode, Cursor, and any agent that reads the standard SKILL.md format.
 
 ### Quick Start
 
 ```bash
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 python skills.py
 ```
 
@@ -58,8 +58,8 @@ Bu proje, **48 üst düzey depodan 450+ SKILL.md dosyasını** **10 işlevsel ka
 ### Hızlı Başlangıç
 
 ```bash
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 python skills.py
 ```
 

@@ -6,7 +6,7 @@
 <details open>
 <summary>English</summary>
 
-Contributions are welcome! Here's how you can help improve the Agent Skills Project.
+Contributions are welcome! Here's how you can help improve AgentSynapse.
 
 ## Adding a Repository
 
@@ -97,7 +97,7 @@ Türkçe içerik burada...
 
 ## Reporting Issues
 
-Report bugs, feature requests, or questions via [GitHub Issues](https://github.com/bayraktarozcan/agent-skills-project/issues).
+Report bugs, feature requests, or questions via [GitHub Issues](https://github.com/bayraktarozcan/AgentSynapse/issues).
 
 When reporting a bug, include:
 - Your operating system (Windows / macOS / Linux)
@@ -201,7 +201,7 @@ Türkçe içerik burada...
 
 ## Sorun Bildirme
 
-Hataları, özellik taleplerini veya sorularınızı [GitHub Issues](https://github.com/bayraktarozcan/agent-skills-project/issues) üzerinden bildirin.
+Hataları, özellik taleplerini veya sorularınızı [GitHub Issues](https://github.com/bayraktarozcan/AgentSynapse/issues) üzerinden bildirin.
 
 Bir hata bildirirken şunları ekleyin:
 - İşletim sisteminiz (Windows / macOS / Linux)

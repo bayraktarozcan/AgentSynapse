@@ -19,8 +19,8 @@
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 ```
 
 ### 2. Run the installer
@@ -182,8 +182,8 @@ Each subdirectory should contain at least one `SKILL.md` file.
 ### 1. Depoyu klonlayın
 
 ```bash
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 ```
 
 ### 2. Yükleyiciyi çalıştırın

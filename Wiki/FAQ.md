@@ -86,7 +86,7 @@ Some repositories may be large or slow to clone. The installer has a 120-second 
 
 ### What does "subpath not found" mean?
 
-Some repos store their skills in a subdirectory rather than the root. The installer looks for the specified subpath. If the upstream repo changes its structure, this error may appear. Please [open an issue](https://github.com/bayraktarozcan/agent-skills-project/issues) if you encounter this.
+Some repos store their skills in a subdirectory rather than the root. The installer looks for the specified subpath. If the upstream repo changes its structure, this error may appear. Please [open an issue](https://github.com/bayraktarozcan/AgentSynapse/issues) if you encounter this.
 
 ## Category Questions
 
@@ -229,7 +229,7 @@ Bazı depolar büyük veya klonlaması yavaş olabilir. Yükleyicinin depo baş�
 
 ### "Alt klasör bulunamadı" ne anlama geliyor?
 
-Bazı depolar becerilerini kök dizin yerine bir alt dizinde saklar. Yükleyici belirtilen alt yolu arar. Yukarı akış deposu yapısını değiştirirse bu hata görünebilir. Bununla karşılaşırsanız lütfen [bir issue açın](https://github.com/bayraktarozcan/agent-skills-project/issues).
+Bazı depolar becerilerini kök dizin yerine bir alt dizinde saklar. Yükleyici belirtilen alt yolu arar. Yukarı akış deposu yapısını değiştirirse bu hata görünebilir. Bununla karşılaşırsanız lütfen [bir issue açın](https://github.com/bayraktarozcan/AgentSynapse/issues).
 
 ## Kategori Soruları
 

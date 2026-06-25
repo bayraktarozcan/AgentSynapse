@@ -1,4 +1,4 @@
-# Agent Skills Project
+# AgentSynapse
 
 | <kbd>[🇬🇧 **English**](#en)</kbd> | <kbd>[🇹🇷 **Türkçe**](#tr)</kbd> |
 |---|---|
@@ -12,8 +12,8 @@
 
 **450+ curated AI agent skills** from 34 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
 
-[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/agent-skills-project)
-[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/agent-skills-project)
+[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 
@@ -22,8 +22,8 @@
 ## Quickstart
 
 ```bash
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 
 # Recommended -- 450+ curated skills (default)
 python skills.py
@@ -169,7 +169,7 @@ git clone --depth 1 <repo> -> parse SKILL.md frontmatter -> deduplicate -> copy 
 ## Project Structure
 
 ```
-agent-skills-project/
+AgentSynapse/
 +-- skills.py            # The entire project -- CLI + GUI, bilingual, self-contained
 +-- README.md            # This file (bilingual EN/TR)
 +-- CHANGELOG.md         # Bilingual changelog
@@ -190,8 +190,8 @@ agent-skills-project/
 
 ```bash
 # Clone repo
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 
 # Run regression
 python skills.py recommended           # 34 repos, ~450 skills
@@ -229,8 +229,8 @@ MIT -- see [LICENSE](LICENSE).
 
 ## Community
 
-- [Issues](https://github.com/bayraktarozcan/agent-skills-project/issues) -- bugs, feature requests, questions.
-- [Discussions](https://github.com/bayraktarozcan/agent-skills-project/discussions) -- ideas, showcase, help.
+- [Issues](https://github.com/bayraktarozcan/AgentSynapse/issues) -- bugs, feature requests, questions.
+- [Discussions](https://github.com/bayraktarozcan/AgentSynapse/discussions) -- ideas, showcase, help.
 
 Built for the AI agent community.
 
@@ -240,8 +240,8 @@ Built for the AI agent community.
 
 **450'den fazla küratörlü AI ajan becerisi**, 34 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
 
-[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/agent-skills-project)
-[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/agent-skills-project)
+[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
 
@@ -250,8 +250,8 @@ Built for the AI agent community.
 ## Hızlı Başlangıç
 
 ```bash
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 
 # Önerilen -- 450+ küratörlü beceri (varsayılan)
 python skills.py
@@ -391,7 +391,7 @@ git clone --depth 1 <repo> -> SKILL.md ön yüzünü ayrıştır -> tekrarları 
 ## Proje Yapısı
 
 ```
-agent-skills-project/
+AgentSynapse/
 +-- skills.py            # Tüm proje -- CLI + GUI, iki dilli, kendi kendine yeter
 +-- README.md            # Bu dosya (çift dilli EN/TR)
 +-- CHANGELOG.md         # Çift dilli değişiklik günlüğü
@@ -412,8 +412,8 @@ agent-skills-project/
 
 ```bash
 # Depoyu klonla
-git clone https://github.com/bayraktarozcan/agent-skills-project.git
-cd agent-skills-project
+git clone https://github.com/bayraktarozcan/AgentSynapse.git
+cd AgentSynapse
 
 # Regresyon testi
 python skills.py recommended           # 34 depo, ~450 beceri
@@ -451,7 +451,7 @@ MIT -- detaylar için [LICENSE](LICENSE) dosyasına bakın.
 
 ## Topluluk
 
-- [Sorunlar](https://github.com/bayraktarozcan/agent-skills-project/issues) -- hatalar, özellik talepleri, sorular.
-- [Tartışmalar](https://github.com/bayraktarozcan/agent-skills-project/discussions) -- fikirler, vitrin, yardım.
+- [Sorunlar](https://github.com/bayraktarozcan/AgentSynapse/issues) -- hatalar, özellik talepleri, sorular.
+- [Tartışmalar](https://github.com/bayraktarozcan/AgentSynapse/discussions) -- fikirler, vitrin, yardım.
 
 AI ajan topluluğu için üretilmiştir.
