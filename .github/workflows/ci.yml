@@ -3,23 +3,70 @@ name: CI
 on:
   push:
     branches: [main]
+    paths:
+      - "skills.py"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
-
-permissions:
-  contents: read
+    paths:
+      - "skills.py"
+  workflow_dispatch:
 
 jobs:
-  lint:
-    name: Lint & Syntax Check
+  syntax:
+    name: Python Syntax Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
-      - name: Check Python syntax
+          python-version: "3.10"
+      - name: Check syntax
         run: python -m py_compile skills.py
-      - name: Verify AST parse
-        run: python -c "import ast; ast.parse(open('skills.py').read()); print('OK')"
+
+  dry-run:
+    name: Dry-Run Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install git
+        run: sudo apt-get update && sudo apt-get install -y git
+      - name: Dry-run recommended
+        run: python skills.py --dry-run
+      - name: Dry-run trusted
+        run: python skills.py --dry-run trusted
+      - name: Dry-run all
+        run: python skills.py --dry-run all
+      - name: Dry-run single category
+        run: python skills.py --dry-run K2
+      - name: Dry-run multiple categories
+        run: python skills.py --dry-run K2 K4 K6
+      - name: Version flag
+        run: python skills.py --version
+      - name: Help flag
+        run: python skills.py --help
+      - name: List categories
+        run: python skills.py --list
+
+  cross-platform:
+    name: Cross-Platform (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Syntax check
+        run: python -m py_compile skills.py
+      - name: Version info
+        run: python skills.py --version
+      - name: Help text
+        run: python skills.py --help
+      - name: List categories
+        run: python skills.py --list
