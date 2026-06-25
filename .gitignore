@@ -1,0 +1,27 @@
+# Legacy -- archived from git (skills.ps1, karar.md), not committed again
+Legacy/
+
+# Logs
+Logs/
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temp
+tree.txt
+tmp/
+temp/
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.vs/
