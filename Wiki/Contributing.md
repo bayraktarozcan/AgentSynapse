@@ -83,8 +83,6 @@ English content here...
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 Türkçe içerik burada...
 
@@ -111,8 +109,6 @@ When reporting a bug, include:
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 Katkılarınız memnuniyetle karşılanır! Agent Beceri Projesi'ni iyileştirmek için nasıl yardımcı olabileceğiniz aşağıda açıklanmıştır.
 
@@ -191,8 +187,6 @@ Wiki içeriği, proje kökündeki `Wiki/` dizininde bulunur. Her sayfa, `<detail
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 Türkçe içerik burada...
 
@@ -215,5 +209,3 @@ Bir hata bildirirken şunları ekleyin:
 - Git sürümü (`git --version`)
 - Çalıştırdığınız tam komut (varsa `--lang tr` ile birlikte)
 - Günlük dosyasındaki hata mesajları
-
-</details>

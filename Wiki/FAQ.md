@@ -148,8 +148,6 @@ These are timestamped to the second, so every run produces unique files.
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 ## Genel Sorular
 
@@ -289,5 +287,3 @@ Evet. Yükleyici aşağıdakilerde test edilmiştir:
 - `skills-tree_YYYY-AA-GG_SS-DD-SN.txt` — `~/.agents/` dizin ağacı
 
 Bunlar saniyeye kadar zaman damgalıdır, böylece her çalıştırma benzersiz dosyalar üretir.
-
-</details>

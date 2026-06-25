@@ -58,6 +58,10 @@ Multiple categories can be combined: `python skills.py K1 K2 K3`
 | `--gui` | Launch tkinter graphical interface |
 | `--lang tr` | Force Turkish language |
 | `--lang en` | Force English language |
+| `--dry-run` | Preview repos without installing |
+| `--prefix PATH` | Custom install directory |
+| `--uninstall` | Remove all installed skills |
+| `--check` | Pre-flight environment check (Python, Git, network, disk) |
 | `--list` | List all available categories with descriptions |
 | `--show-config` | Dump the embedded repo registry as JSON |
 | `--readme` | Display README.md (bilingual) |
@@ -107,8 +111,6 @@ python skills.py --show-config > config.json
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 ## Kullanım
 
@@ -162,6 +164,10 @@ Birden çok kategori birleştirilebilir: `python skills.py K1 K2 K3`
 | `--gui` | tkinter grafik arayüzünü başlat |
 | `--lang tr` | Türkçe dilini zorla |
 | `--lang en` | İngilizce dilini zorla |
+| `--dry-run` | Repoları kurmadan önizle |
+| `--prefix PATH` | Özel kurulum dizini |
+| `--uninstall` | Tüm becerileri kaldır |
+| `--check` | Ön uçuş ortam kontrolü (Python, Git, ağ, disk) |
 | `--list` | Tüm kategorileri açıklamalarıyla listele |
 | `--show-config` | Gömülü repo kaydını JSON olarak dök |
 | `--readme` | README.md'yi göster (çift dilli) |
@@ -207,5 +213,3 @@ python skills.py --show-config > config.json
 |----------|------|
 | `LANG` | Dil algılama (otomatik: `tr` öneki → Türkçe) |
 | `LC_ALL` | Alternatif dil algılama değişkeni |
-
-</details>

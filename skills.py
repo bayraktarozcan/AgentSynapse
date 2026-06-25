@@ -13,6 +13,7 @@ Usage:
   python skills.py --dry-run               Preview repos without installing
   python skills.py --prefix PATH           Install to custom directory
   python skills.py --uninstall             Remove all installed skills
+  python skills.py --check                 Run pre-flight environment check
   python skills.py --list                  List available categories
   python skills.py --help                  Show this help
 """
@@ -29,6 +30,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 from typing import Any
 
@@ -114,6 +116,30 @@ S: dict[str, dict[str, str]] = {
         "python_version": "Python 3.8 or later is required. Found:",
         "installing": "installing...",
         "proceed": "Proceed? (y/N):",
+        "check": "Run pre-flight environment check",
+        "pre_flight_title": "====== Environment Check ======",
+        "check_pass": "PASS",
+        "check_warn": "WARN",
+        "check_fail": "FAIL",
+        "check_git_ok": "Git found",
+        "check_git_missing": "Git not found",
+        "install_git_hint": "Install Git:",
+        "hint_linux": "  sudo apt install git  # Debian/Ubuntu",
+        "hint_mac": "  brew install git  # macOS",
+        "hint_win": "  winget install Git.Git  # Windows",
+        "check_network_ok": "GitHub reachable",
+        "check_network_fail": "GitHub unreachable \u2014 check your internet connection",
+        "check_network_skip": "Proceeding without network check",
+        "check_disk_ok": "Sufficient disk space",
+        "check_disk_warn": "Low disk space: {free} MB free, ~500 MB recommended",
+        "check_python_ok": "Python {ver}",
+        "check_agents_dir_ok": "Skills directory exists",
+        "check_agents_dir_created": "Created skills directory at {path}",
+        "check_agents_dir_error": "Failed to create skills directory: {error}",
+        "retry_clone": "Clone failed, retrying {n}/{max}...",
+        "post_verify_title": "====== Post-Install Verification ======",
+        "post_verify_count": "Installed skill directories: {count}",
+        "post_verify_empty": "No skill directories found in {path}",
     },
     "tr": {
         "app_name": "Agent Beceri Projesi",
@@ -194,6 +220,30 @@ S: dict[str, dict[str, str]] = {
         "python_version": "Python 3.8 veya ustu gerekli. Bulunan:",
         "installing": "yukleniyor...",
         "proceed": "Devam edilsin mi? (y/N):",
+        "check": "Kurulum oncesi ortam kontrolu yap",
+        "pre_flight_title": "====== Ortam Kontrolu ======",
+        "check_pass": "BASARILI",
+        "check_warn": "UYARI",
+        "check_fail": "BASARISIZ",
+        "check_git_ok": "Git bulundu",
+        "check_git_missing": "Git bulunamadi",
+        "install_git_hint": "Git'i yukleyin:",
+        "hint_linux": "  sudo apt install git  # Debian/Ubuntu",
+        "hint_mac": "  brew install git  # macOS",
+        "hint_win": "  winget install Git.Git  # Windows",
+        "check_network_ok": "GitHub'a erisilebiliyor",
+        "check_network_fail": "GitHub'a erisilemiyor \u2014 internet baglantinizi kontrol edin",
+        "check_network_skip": "Ag kontrolu olmadan devam ediliyor",
+        "check_disk_ok": "Yeterli disk alani var",
+        "check_disk_warn": "Az disk alani: {free} MB bos, ~500 MB onerilir",
+        "check_python_ok": "Python {ver}",
+        "check_agents_dir_ok": "Beceri klasoru mevcut",
+        "check_agents_dir_created": "Beceri klasoru olusturuldu: {path}",
+        "check_agents_dir_error": "Beceri klasoru olusturulamadi: {error}",
+        "retry_clone": "Klonlama basarisiz, yeniden deneniyor {n}/{max}...",
+        "post_verify_title": "====== Kurulum Sonrasi Dogrulama ======",
+        "post_verify_count": "Yuklenen beceri klasoru sayisi: {count}",
+        "post_verify_empty": "{path} klasorunde beceri bulunamadi",
     },
 }
 
@@ -517,6 +567,7 @@ def process_repo(
 ) -> tuple[int, int]:
     """
     Clone repo, find SKILL.md files, copy to SKILLS_DIR.
+    Retries up to 2 times on clone failure.
     Returns (skill_count, fix_count).
     """
     safe_name = repo.replace("/", "-")
@@ -525,29 +576,49 @@ def process_repo(
     logging.info(f"[PROCESS] {repo} {_('cloning', lang)}")
     print(c(f"  [{_('process', lang)}] {repo} {_('cloning', lang)}", "blue"))
 
-    try:
-        result = subprocess.run(
-            ["git", "clone", "--depth", "1", f"https://github.com/{repo}.git", str(tmpdir)],
-            capture_output=True,
-            text=True,
-            timeout=300,
-        )
-    except FileNotFoundError:
-        logging.error(f"[ERROR] git {_('not_found', lang)}")
-        print(c(f"  [{_('error', lang)}] git {_('not_found', lang)}", "red"))
-        cleanup(tmpdir)
-        return 0, 0
-    except subprocess.TimeoutExpired:
-        logging.error(f"[ERROR] {repo} — {_('timeout', lang)}")
-        print(c(f"  [{_('error', lang)}] {repo} — {_('timeout', lang)}", "red"))
-        cleanup(tmpdir)
-        return 0, 0
+    max_retries = 3
+    last_error = ""
 
-    if result.returncode != 0:
-        logging.error(f"[ERROR] {repo} — {_('clone_failed', lang)}: {result.stderr.strip()}")
+    for attempt in range(1, max_retries + 1):
+        try:
+            result = subprocess.run(
+                ["git", "clone", "--depth", "1", f"https://github.com/{repo}.git", str(tmpdir)],
+                capture_output=True,
+                text=True,
+                timeout=300,
+            )
+        except FileNotFoundError:
+            logging.error(f"[ERROR] git {_('not_found', lang)}")
+            print(c(f"  [{_('error', lang)}] git {_('not_found', lang)}", "red"))
+            _install_git_hint(lang)
+            cleanup(tmpdir)
+            return 0, 0
+        except subprocess.TimeoutExpired as exc:
+            last_error = str(exc)
+            logging.error(f"[ERROR] {repo} — {_('timeout', lang)} (attempt {attempt}/{max_retries})")
+            print(c(f"  [{_('error', lang)}] {repo} — {_('timeout', lang)}", "red"))
+            cleanup(tmpdir)
+            if attempt < max_retries:
+                tmpdir = Path(tempfile.mkdtemp(prefix=f"asp-{safe_name}-"))
+                print(c(f"    {_('retry_clone', lang).format(n=attempt + 1, max=max_retries)}", "yellow"))
+                time.sleep(2)
+                continue
+            return 0, 0
+
+        if result.returncode == 0:
+            break  # success
+
+        last_error = result.stderr.strip()
+        logging.error(f"[ERROR] {repo} — {_('clone_failed', lang)} (attempt {attempt}/{max_retries}): {last_error}")
         print(c(f"  [{_('error', lang)}] {repo} — {_('clone_failed', lang)}", "red"))
-        cleanup(tmpdir)
-        return 0, 0
+        if attempt < max_retries:
+            cleanup(tmpdir)
+            tmpdir = Path(tempfile.mkdtemp(prefix=f"asp-{safe_name}-"))
+            print(c(f"    {_('retry_clone', lang).format(n=attempt + 1, max=max_retries)}", "yellow"))
+            time.sleep(2)
+        else:
+            cleanup(tmpdir)
+            return 0, 0
 
     src = tmpdir
     if subpath:
@@ -675,16 +746,160 @@ def _copy_recursive(src: Path, dst: Path) -> None:
             shutil.copy2(s, d)
 
 
+# ─────────────────────────────── PROACTIVE ERROR HANDLING ───────────────────────────────
+
+
+def _print_check(label: str, status: str, detail: str = "", lang: str = "en") -> None:
+    status_map = {
+        _("check_pass", lang): "green",
+        _("check_warn", lang): "yellow",
+        _("check_fail", lang): "red",
+    }
+    sc = status_map.get(status, "white")
+    label_pad = label.ljust(28)
+    print(c(f"  [{status}] {label_pad} {detail}", sc))
+
+
+def _get_free_space(path: Path) -> int:
+    """Return free space in MB at the given path."""
+    try:
+        usage = shutil.disk_usage(path)
+        return usage.free // (1024 * 1024)
+    except OSError:
+        return 0
+
+
+def _check_network(lang: str) -> bool:
+    """Check if GitHub is reachable via HEAD request."""
+    import urllib.request
+    import urllib.error
+    try:
+        req = urllib.request.Request(
+            "https://github.com",
+            method="HEAD",
+            headers={"User-Agent": "Mozilla/5.0"},
+        )
+        urllib.request.urlopen(req, timeout=10)
+        return True
+    except (urllib.error.URLError, OSError):
+        return False
+
+
+def _install_git_hint(lang: str) -> None:
+    """Print OS-specific git install instruction."""
+    print(c(f"    {_('install_git_hint', lang)}", "yellow"))
+    if sys.platform == "linux":
+        print(c(f"    {_('hint_linux', lang)}", "white"))
+    elif sys.platform == "darwin":
+        print(c(f"    {_('hint_mac', lang)}", "white"))
+    elif sys.platform == "win32":
+        print(c(f"    {_('hint_win', lang)}", "white"))
+    else:
+        print(c(f"    https://git-scm.com/downloads", "white"))
+    print()
+
+
+def pre_flight_check(lang: str) -> bool:
+    """Run all environment checks. Returns True if all critical checks pass."""
+    env_pass = True
+
+    print()
+    print(c(f"  {_('pre_flight_title', lang)}", "white"))
+    print(c("=" * 55, "white"))
+
+    # 1. Python version
+    py_ver = f"{sys.version_info.major}.{sys.version_info.minor}"
+    if sys.version_info >= (3, 8):
+        _print_check(_("check_python_ok", lang).format(ver=py_ver), _("check_pass", lang), lang=lang)
+    else:
+        _print_check(_("check_python_ok", lang).format(ver=py_ver), _("check_fail", lang), lang=lang)
+        env_pass = False
+
+    # 2. Git
+    if _check_git(lang):
+        _print_check(_("check_git_ok", lang), _("check_pass", lang), lang=lang)
+    else:
+        _print_check(_("check_git_missing", lang), _("check_fail", lang), lang=lang)
+        _install_git_hint(lang)
+        env_pass = False
+
+    # 3. Network
+    if _check_network(lang):
+        _print_check(_("check_network_ok", lang), _("check_pass", lang), lang=lang)
+    else:
+        _print_check(_("check_network_fail", lang), _("check_fail", lang), lang=lang)
+        _print_check(_("check_network_skip", lang), _("check_warn", lang), lang=lang)
+
+    # 4. Disk space
+    parent = SKILLS_DIR.parent if SKILLS_DIR.parent.exists() else Path.home()
+    free_mb = _get_free_space(parent)
+    if free_mb >= 500:
+        _print_check(_("check_disk_ok", lang), _("check_pass", lang), detail=f"{free_mb} MB", lang=lang)
+    elif free_mb > 0:
+        _print_check(_("check_disk_warn", lang).format(free=free_mb), _("check_warn", lang), lang=lang)
+    else:
+        _print_check(_("check_disk_ok", lang), _("check_pass", lang), detail="N/A", lang=lang)
+
+    # 5. Skills directory
+    try:
+        SKILLS_DIR.mkdir(parents=True, exist_ok=True)
+        if SKILLS_DIR.is_dir():
+            _print_check(_("check_agents_dir_ok", lang), _("check_pass", lang), detail=str(SKILLS_DIR), lang=lang)
+        else:
+            _print_check(_("check_agents_dir_created", lang).format(path=str(SKILLS_DIR)), _("check_pass", lang), lang=lang)
+    except OSError as e:
+        _print_check(_("check_agents_dir_error", lang).format(error=str(e)), _("check_fail", lang), lang=lang)
+        env_pass = False
+
+    print(c("=" * 55, "white"))
+    print()
+    return env_pass
+
+
+def _post_install_verify(lang: str) -> None:
+    """Count installed skill directories and print summary."""
+    print()
+    print(c(f"  {_('post_verify_title', lang)}", "white"))
+    print(c("=" * 55, "white"))
+    if SKILLS_DIR.is_dir():
+        skill_dirs = [d for d in SKILLS_DIR.iterdir() if d.is_dir()]
+        count = len(skill_dirs)
+        if count > 0:
+            _print_check(_("post_verify_count", lang).format(count=count), _("check_pass", lang), lang=lang)
+        else:
+            _print_check(_("post_verify_empty", lang).format(path=str(SKILLS_DIR)), _("check_warn", lang), lang=lang)
+    else:
+        _print_check(_("post_verify_empty", lang).format(path=str(SKILLS_DIR)), _("check_warn", lang), lang=lang)
+    print(c("=" * 55, "white"))
+    print()
+
+
 # ─────────────────────────────── INSTALL FROM LIST ───────────────────────────────
 
 def _check_git(lang: str) -> bool:
+    """Check if git is available. Returns True if found."""
     try:
         result = subprocess.run(
             ["git", "--version"], capture_output=True, text=True, timeout=30
         )
-        return result.returncode == 0
+        if result.returncode == 0:
+            return True
     except (FileNotFoundError, subprocess.TimeoutExpired):
-        return False
+        pass
+
+    # Fallback: search common git locations
+    common_paths = [
+        r"C:\Program Files\Git\cmd\git.exe",
+        r"C:\Program Files (x86)\Git\cmd\git.exe",
+        "/usr/bin/git",
+        "/usr/local/bin/git",
+        "/opt/homebrew/bin/git",
+    ]
+    for gp in common_paths:
+        if Path(gp).exists():
+            return True
+
+    return False
 
 
 def _dry_run_list(target: str, lang: str) -> None:
@@ -722,8 +937,16 @@ def install(
         print(c(f"  [{_('warn', lang)}] No repos found for '{target}'.", "yellow"))
         return 0, 0, 0
 
+    # Auto-create skills directory
+    try:
+        SKILLS_DIR.mkdir(parents=True, exist_ok=True)
+    except OSError as e:
+        print(c(f"  [{_('error', lang)}] {_('check_agents_dir_error', lang).format(error=str(e))}", "red"))
+        return 0, 0, 0
+
     if not _check_git(lang):
         print(c(f"  [{_('error', lang)}] git {_('not_found', lang)}", "red"))
+        _install_git_hint(lang)
         return 0, 0, 0
 
     total_rows = len(rows)
@@ -859,6 +1082,9 @@ def final_report(ok: int, fail: int, fixes: int, lang: str) -> None:
     print(c(f"         {status}", sc))
     print(c(f"  {_('total', lang)}: {ok} | {_('failed', lang)}: {fail} | {_('fixed', lang)}: {fixes}", sc))
     print(c("=" * 55, sc))
+
+    if ok > 0:
+        _post_install_verify(lang)
 
     save_tree(lang)
     if LOG_PATH:
@@ -1131,6 +1357,7 @@ def _show_general_help(lang: str) -> None:
     print(f"    --dry-run   {_('dry_run', lang)}")
     print(f"    --prefix PATH {_('prefix', lang)}")
     print(f"    --uninstall {_('uninstall', lang)}")
+    print(f"    --check     {_('check', lang)}")
     print(f"    --list      {_('list', lang)}")
     print(f"    --show-config {_('show_config', lang)}")
     print(f"    --readme    {_('readme', lang)}")
@@ -1163,6 +1390,7 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--prefix", type=str, default=None)
     parser.add_argument("--uninstall", action="store_true")
+    parser.add_argument("--check", action="store_true")
     parser.add_argument("--list", action="store_true")
     parser.add_argument("--show-config", action="store_true")
     parser.add_argument("--readme", action="store_true")
@@ -1201,6 +1429,8 @@ def main() -> None:
         print()
     elif getattr(args, "show_config", False):
         print(json.dumps(REPOS, indent=2, ensure_ascii=False))
+    elif args.check:
+        pre_flight_check(lang)
     elif args.version:
         print(_("version_str", lang))
     elif args.uninstall:

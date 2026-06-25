@@ -68,9 +68,6 @@ Skills persist until you reinstall.
 
 <a id="tr"></a>
 
-<details>
-<summary><b>Türkçe</b></summary>
-
 ## Yardım Alma
 
 ### Dokümantasyon
@@ -123,5 +120,3 @@ mkdir -p ~/.agents/skills
 
 `python skills.py` 34 depoyu `--depth 1` ile klonlar. İlk çalıştırma ağırlıklı olarak ağ trafiği içerir (~200MB).
 Beceriler yeniden yükleyene kadar kalıcıdır.
-
-</details>

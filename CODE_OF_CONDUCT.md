@@ -78,9 +78,6 @@ https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.
 
 <a id="tr"></a>
 
-<details>
-<summary><b>Türkçe</b></summary>
-
 ## Taahhüdümüz
 
 Bizler, üyeler, katkıda bulunanlar ve liderler olarak, topluluğumuzda herkes için
@@ -139,5 +136,3 @@ Bu Davranış Kuralları, [Contributor Covenant][homepage] sürüm 2.1'den
 uyarlanmıştır.
 
 [homepage]: https://www.contributor-covenant.org
-
-</details>

@@ -111,6 +111,7 @@ python skills.py K2 K4 K6    # AI + Frontend + Security
 | `--dry-run` | Preview repos without installing |
 | `--prefix PATH` | Custom install directory |
 | `--uninstall` | Remove all installed skills |
+| `--check` | Pre-flight environment check (Python, Git, network, disk) |
 | `--list` | List available categories |
 | `--show-config` | Dump repo registry as JSON |
 | `--version` | Show version |
@@ -237,9 +238,6 @@ Built for the AI agent community.
 
 <a id="tr"></a>
 
-<details>
-<summary><b>Türkçe</b></summary>
-
 **450'den fazla küratörlü AI ajan becerisi**, 34 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
 
 [![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/agent-skills-project)
@@ -293,7 +291,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 - **İki dilli** -- İngilizce ve Türkçe. Otomatik algılama veya `--lang tr`.
 - **Çapraz platform** -- Windows, macOS, Linux. Tek Python dosyası, bağımlılık yok.
 - **Varsayılan olarak güvenilir** -- Önerilen profili yalnızca doğrulanmış depolar içerir; Topluluk ve Risk opsiyoneldir.
-- **Otomatik tekrar temizleme** -- iki depo aynı beceriye sahipse, üst kategorideki (düşük K numarası) kazanır.
+- **Otomatik tekrar temizleme** -- iki depo aynı beceriye sahipse, üst kategorideki (yüksek K numarası) kazanır.
 - **Ajan-yerel formatı** -- tüm beceriler standart SKILL.md formatındadır. Dönüşüm gerekmez.
 - **Tam denetim izi** -- zaman damgalı günlükler, çalıştırma başına klasör ağacı.
 - **Grafik arayüz** -- `--gui` ile tkinter yükleyici, profil hızlı seçimi.
@@ -335,6 +333,7 @@ python skills.py K10         # Risk (opsiyonel)
 | `--dry-run` | Repoları kurmadan önizle |
 | `--prefix PATH` | Özel kurulum dizini |
 | `--uninstall` | Tüm becerileri kaldır |
+| `--check` | Ön uçuş ortam kontrolü (Python, Git, ağ, disk) |
 | `--list` | Kategorileri listele |
 | `--show-config` | Repo kaydını JSON olarak göster |
 | `--version` | Sürümü göster |
@@ -456,5 +455,3 @@ MIT -- detaylar için [LICENSE](LICENSE) dosyasına bakın.
 - [Tartışmalar](https://github.com/bayraktarozcan/agent-skills-project/discussions) -- fikirler, vitrin, yardım.
 
 AI ajan topluluğu için üretilmiştir.
-
-</details>

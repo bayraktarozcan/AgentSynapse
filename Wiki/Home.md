@@ -50,8 +50,6 @@ That's it. The recommended profile installs ~450 skills from 34 curated repos.
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 **Agent Beceri Projesi** wiki'sine hoş geldiniz.
 
@@ -93,5 +91,3 @@ Bu kadar. Önerilen profil, 34 küratörlü depodan ~450 beceri yükler.
 | [Komut-Referansi](Command-Reference) | CLI flag'leri, profiller, Türkçe alias'lar, seçenekler |
 | [Katkida-Bulunma](Contributing) | Depo ekleme, kalite kriterleri, yeniden sınıflandırma |
 | [SSS](FAQ) | Sorun giderme, sık sorulan sorular, kaldırma |
-
-</details>

@@ -61,9 +61,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <a id="tr"></a>
 
-<details>
-<summary><b>Türkçe</b></summary>
-
 Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
 ## [1.0.0] - 2026-06-25
@@ -106,5 +103,3 @@ Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 - skills.ps1 — PowerShell yükleyici, Kademe tabanlı sınıflandırma (K1–K6).
 - karar.md — sınıflandırma belgesi.
 - Git deposu başlatma.
-
-</details>

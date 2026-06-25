@@ -61,9 +61,6 @@ When adding a new repository to the ecosystem, assess:
 
 <a id="tr"></a>
 
-<details>
-<summary><b>Türkçe</b></summary>
-
 ## Desteklenen Sürümler
 
 | Sürüm | Destek |
@@ -105,5 +102,3 @@ Ekosisteme yeni bir depo eklerken değerlendirin:
 - Beceriler **asla çalıştırılmaz** — ~/.agents/skills/ konumuna kopyalanan metin dosyalarıdır (SKILL.md).
 - Risk (K10) ve Topluluk (K9) kategorileri **her zaman opsiyoneldir**.
 - Önerilen profili yalnızca doğrulanmış, aktif depolar içerir.
-
-</details>

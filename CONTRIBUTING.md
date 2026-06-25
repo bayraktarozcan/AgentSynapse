@@ -90,9 +90,6 @@ By participating, you are expected to uphold this code.
 
 <a id="tr"></a>
 
-<details>
-<summary><b>Türkçe</b></summary>
-
 Öncelikle, katkıda bulunmaya zaman ayırdığınız için teşekkürler!
 
 ## Nasıl Katkıda Bulunabilirim?
@@ -161,5 +158,3 @@ Conventional Commits kullanıyoruz:
 
 Bu proje [Davranış Kuralları](CODE_OF_CONDUCT.md) ile yönetilmektedir.
 Katılımınızla bu kurallara uymayı kabul etmiş olursunuz.
-
-</details>

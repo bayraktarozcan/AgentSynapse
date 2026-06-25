@@ -134,8 +134,6 @@ Experimental, high-risk, or unmaintained repositories. Excluded from all profile
 </details>
 
 <a id="tr"></a>
-<details>
-<summary>Türkçe</summary>
 
 Beceriler 10 işlevsel kategoride (K1–K10) düzenlenmiştir. Her kategori, yazılım mühendisliği ve AI ajan geliştirmenin farklı bir alanını temsil eder.
 
@@ -261,5 +259,3 @@ Deneysel, yüksek riskli veya bakımı yapılmayan depolar. Yalnızca `tumu` pro
 | [leonxlnx/taste-skill](https://github.com/leonxlnx/taste-skill) | Taste tasarım becerisi |
 | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | Pazarlama becerileri koleksiyonu |
 | [wshobson/agents](https://github.com/wshobson/agents) | Ajan deneyleri |
-
-</details>
