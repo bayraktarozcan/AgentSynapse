@@ -1093,6 +1093,177 @@ def final_report(ok: int, fail: int, fixes: int, lang: str) -> None:
 
 # ─────────────────────────────── GUI ───────────────────────────────
 
+# ── OLED Dark Theme ──
+
+OLED_BG = "#000000"
+OLED_BG_SEC = "#0d1117"
+OLED_BG_CARD = "#161b22"
+OLED_BG_HOVER = "#1c2128"
+OLED_BORDER = "#30363d"
+OLED_BORDER_FOCUS = "#484f58"
+OLED_TEXT = "#e6edf3"
+OLED_TEXT_SEC = "#8b949e"
+OLED_TEXT_MUTED = "#6e7681"
+OLED_ACCENT = "#d29922"
+OLED_ACCENT_DIM = "#bb8009"
+OLED_SUCCESS = "#3fb950"
+OLED_SUCCESS_DIM = "#2ea043"
+OLED_WARN = "#d29922"
+OLED_ERROR = "#f85149"
+OLED_SELECT = "#264f78"
+OLED_FONT = ("Segoe UI", 10)
+OLED_FONT_MONO = ("Consolas", 10)
+OLED_FONT_SMALL = ("Segoe UI", 9)
+OLED_FONT_HEADER = ("Segoe UI", 11, "bold")
+
+
+def _apply_oled_theme(root: tk.Tk) -> None:
+    """Apply OLED dark theme to all tkinter/ttk widgets in-place."""
+    import tkinter as tk
+    from tkinter import ttk
+
+    root.configure(bg=OLED_BG)
+    root.option_add("*Font", OLED_FONT)
+
+    style = ttk.Style(root)
+
+    # Determine platform theme name
+    theme = style.theme_use()
+    available = style.theme_names()
+    # Prefer "clam" as base for custom themes
+    if "clam" in available:
+        style.theme_use("clam")
+
+    # ── Root / Frame ──
+    style.configure(".", background=OLED_BG, foreground=OLED_TEXT,
+                     fieldbackground=OLED_BG, troughcolor=OLED_BG,
+                     selectbackground=OLED_SELECT, selectforeground=OLED_TEXT,
+                     borderwidth=0, focuscolor=OLED_BORDER_FOCUS)
+
+    # ── Frame ──
+    style.configure("TFrame", background=OLED_BG)
+    style.configure("Card.TFrame", background=OLED_BG_CARD,
+                    relief="solid", borderwidth=1)
+    style.configure("Section.TFrame", background=OLED_BG_SEC,
+                    relief="flat", borderwidth=0)
+
+    # ── Label ──
+    style.configure("TLabel", background=OLED_BG, foreground=OLED_TEXT,
+                    font=OLED_FONT, padding=2)
+    style.configure("Header.TLabel", background=OLED_BG, foreground=OLED_TEXT,
+                    font=OLED_FONT_HEADER)
+    style.configure("Muted.TLabel", background=OLED_BG, foreground=OLED_TEXT_SEC,
+                    font=OLED_FONT_SMALL)
+    style.configure("Accent.TLabel", background=OLED_BG, foreground=OLED_ACCENT,
+                    font=OLED_FONT)
+
+    # ── Button ──
+    style.configure("TButton", background=OLED_BG_CARD, foreground=OLED_TEXT,
+                    font=OLED_FONT, borderwidth=1, focuscolor="none",
+                    relief="solid", padding=(14, 6))
+    style.map("TButton",
+              background=[("active", OLED_BG_HOVER), ("pressed", OLED_BORDER)],
+              foreground=[("active", OLED_TEXT), ("pressed", OLED_ACCENT)],
+              bordercolor=[("active", OLED_ACCENT_DIM), ("focus", OLED_BORDER_FOCUS)])
+
+    # ── Accent Button (Install) ──
+    style.configure("Accent.TButton", background=OLED_ACCENT_DIM, foreground=OLED_BG,
+                    font=OLED_FONT_HEADER, borderwidth=0, relief="flat",
+                    padding=(20, 8))
+    style.map("Accent.TButton",
+              background=[("active", OLED_ACCENT), ("disabled", OLED_BORDER)],
+              foreground=[("active", OLED_BG), ("disabled", OLED_TEXT_MUTED)])
+
+    # ── Danger Button (Cancel) ──
+    style.configure("Danger.TButton", background="#21262d", foreground=OLED_TEXT,
+                    font=OLED_FONT, borderwidth=1, relief="solid",
+                    padding=(14, 6))
+    style.map("Danger.TButton",
+              background=[("active", OLED_ERROR), ("pressed", "#da3633")],
+              foreground=[("active", "#ffffff")])
+
+    # ── Checkbutton ──
+    style.configure("TCheckbutton", background=OLED_BG, foreground=OLED_TEXT,
+                    font=OLED_FONT, focuscolor="none", indicatormargin=4)
+    style.map("TCheckbutton",
+              background=[("active", OLED_BG_SEC)],
+              foreground=[("active", OLED_TEXT)])
+
+    # ── Radiobutton ──
+    style.configure("TRadiobutton", background=OLED_BG, foreground=OLED_TEXT,
+                    font=OLED_FONT, focuscolor="none")
+    style.map("TRadiobutton",
+              background=[("active", OLED_BG_SEC)])
+
+    # ── Progressbar ──
+    style.configure("Horizontal.TProgressbar",
+                    background=OLED_ACCENT, troughcolor=OLED_BG_SEC,
+                    bordercolor=OLED_BORDER, lightcolor=OLED_ACCENT_DIM,
+                    darkcolor=OLED_ACCENT, thickness=8)
+
+    # ── Scrollbar ──
+    style.configure("Vertical.TScrollbar",
+                    background=OLED_BG_CARD, troughcolor=OLED_BG,
+                    bordercolor=OLED_BORDER, arrowcolor=OLED_TEXT,
+                    relief="flat", borderwidth=0)
+    style.map("Vertical.TScrollbar",
+              background=[("active", OLED_BORDER)],
+              arrowcolor=[("active", OLED_ACCENT)])
+
+    # ── Entry ──
+    style.configure("TEntry", fieldbackground=OLED_BG_SEC, foreground=OLED_TEXT,
+                    font=OLED_FONT, borderwidth=1, relief="solid",
+                    insertcolor=OLED_TEXT)
+    style.map("TEntry",
+              fieldbackground=[("focus", OLED_BG_CARD)],
+              bordercolor=[("focus", OLED_ACCENT_DIM)])
+
+    # ── Labelframe ──
+    style.configure("TLabelframe", background=OLED_BG, foreground=OLED_TEXT,
+                    bordercolor=OLED_BORDER, relief="solid", borderwidth=1)
+    style.configure("TLabelframe.Label", background=OLED_BG, foreground=OLED_TEXT,
+                    font=OLED_FONT)
+
+    # ── Treeview ──
+    style.configure("Treeview", background=OLED_BG_SEC, foreground=OLED_TEXT,
+                    fieldbackground=OLED_BG_SEC, font=OLED_FONT_SMALL,
+                    borderwidth=0)
+    style.map("Treeview",
+              background=[("selected", OLED_SELECT)],
+              foreground=[("selected", OLED_TEXT)])
+    style.configure("Treeview.Heading", background=OLED_BG_CARD,
+                    foreground=OLED_TEXT, font=OLED_FONT,
+                    borderwidth=1, relief="solid")
+    style.map("Treeview.Heading",
+              background=[("active", OLED_BG_HOVER)])
+
+
+def _dark_text_widget(widget: tk.Text) -> None:
+    """Apply dark theme to a plain tk.Text widget."""
+    widget.configure(
+        bg=OLED_BG_SEC,
+        fg=OLED_TEXT,
+        insertbackground=OLED_TEXT,
+        selectbackground=OLED_SELECT,
+        selectforeground=OLED_TEXT,
+        borderwidth=1,
+        relief="solid",
+        highlightbackground=OLED_BORDER,
+        highlightcolor=OLED_BORDER_FOCUS,
+        highlightthickness=1,
+        padx=8,
+        pady=6,
+    )
+    # Configure tags for colored log output
+    widget.tag_configure("green", foreground=OLED_SUCCESS)
+    widget.tag_configure("blue", foreground="#58a6ff")
+    widget.tag_configure("red", foreground=OLED_ERROR)
+    widget.tag_configure("yellow", foreground=OLED_WARN)
+    widget.tag_configure("white", foreground=OLED_TEXT)
+    widget.tag_configure("bold", font=OLED_FONT_HEADER)
+    widget.tag_configure("dim", foreground=OLED_TEXT_MUTED)
+
+
 def gui_main(args: argparse.Namespace) -> None:
     lang = args.lang or _detect_lang()
 
@@ -1107,16 +1278,11 @@ def gui_main(args: argparse.Namespace) -> None:
     # ── setup ──
     root = tk.Tk()
     root.title(_("gui_title", lang))
-    root.minsize(700, 500)
-    root.geometry("800x600")
+    root.minsize(720, 560)
+    root.geometry("860x640")
+    _apply_oled_theme(root)
 
-    # Try to set icon
-    try:
-        root.iconbitmap(default="")
-    except Exception:
-        pass
-
-    # ── Variables ──
+    # Variables
     current_lang = lang
     category_vars: dict[str, tk.BooleanVar] = {}
     categories = list_categories(current_lang)
@@ -1179,7 +1345,6 @@ def gui_main(args: argparse.Namespace) -> None:
         progress_bar["value"] = 0
         progress_bar["maximum"] = len(selected)
 
-        # Collect repos for selected categories
         data = load_config(current_lang)
         rows: list[tuple[str, str, str, str, str]] = []
         cat_map = {c["id"]: c for c in data.get("categories", [])}
@@ -1187,9 +1352,8 @@ def gui_main(args: argparse.Namespace) -> None:
             cat = cat_map.get(cid)
             if not cat:
                 continue
-            cat_color = cat.get("color", "white")
             for r in cat.get("repos", []):
-                rows.append((cid, cat["name"], cat_color, r["repo"], r.get("subpath", "")))
+                rows.append((cid, cat["name"], cat.get("color", "white"), r["repo"], r.get("subpath", "")))
 
         progress_bar["maximum"] = len(rows)
         ok_count = 0
@@ -1200,11 +1364,7 @@ def gui_main(args: argparse.Namespace) -> None:
         for idx, (cat_id, cat_name, _, repo, subpath) in enumerate(rows):
             if cat_id != prev_id:
                 prev_id = cat_id
-                _gui_log(
-                    log_text,
-                    f"\n{'='*50}\n     {cat_id} — {cat_name}\n{'='*50}\n",
-                    "blue",
-                )
+                _gui_log(log_text, f"\n{'='*50}\n   {cat_id} — {cat_name}\n{'='*50}\n", "bold")
             _gui_log(log_text, f"  [{_('process', current_lang)}] {repo}" +
                      (f" -> {_('subpath', current_lang)} '{subpath}'" if subpath else "") +
                      " " + _('cloning', current_lang) + "\n", "blue")
@@ -1214,7 +1374,9 @@ def gui_main(args: argparse.Namespace) -> None:
             fix_count += fx_count
             if sk_count > 0:
                 ok_count += 1
-                _gui_log(log_text, f"  [{_('ok', current_lang)}] {repo} -> {sk_count} {_('skills_extracted', current_lang)}\n", "green")
+                _gui_log(log_text,
+                         f"  [{_('ok', current_lang)}] {repo} -> {sk_count} {_('skills_extracted', current_lang)}\n",
+                         "green")
             else:
                 fail_count += 1
 
@@ -1235,59 +1397,97 @@ def gui_main(args: argparse.Namespace) -> None:
 
         save_tree(current_lang)
         if LOG_PATH:
-            _gui_log(log_text, f"\n{_('log_saved', current_lang)}: {LOG_PATH}\n", "white")
+            _gui_log(log_text, f"\n{_('log_saved', current_lang)}: {LOG_PATH}\n", "dim")
 
         install_btn.config(state="normal", text=_("gui_install", current_lang))
         cancel_btn.config(state="normal")
 
-    def _gui_log(widget: tk.Text, msg: str, color: str = "") -> None:
-        widget.insert(tk.END, msg)
+    def _gui_log(widget: tk.Text, msg: str, tag: str = "") -> None:
+        if tag:
+            widget.insert(tk.END, msg, tag)
+        else:
+            widget.insert(tk.END, msg)
         widget.see(tk.END)
         root.update_idletasks()
 
-    # ── Layout ──
-    main_frame = ttk.Frame(root, padding="10")
-    main_frame.pack(fill=tk.BOTH, expand=True)
+    # ── Top bar ──
+    top_bar = tk.Frame(root, bg=OLED_BG_SEC, height=40)
+    top_bar.pack(fill=tk.X)
+    top_bar.pack_propagate(False)
 
-    # Top bar: lang toggle
-    top_frame = ttk.Frame(main_frame)
-    top_frame.pack(fill=tk.X, pady=(0, 5))
-    toggle_btn = ttk.Button(top_frame, text=_("gui_lang_toggle", current_lang), command=toggle_lang)
-    toggle_btn.pack(side=tk.RIGHT)
+    title_lbl = tk.Label(top_bar, text=_("gui_title", current_lang),
+                         bg=OLED_BG_SEC, fg=OLED_ACCENT,
+                         font=OLED_FONT_HEADER, anchor=tk.W)
+    title_lbl.pack(side=tk.LEFT, padx=(16, 0), pady=8)
 
-    # Select label
-    select_label = ttk.Label(main_frame, text=_("gui_select", current_lang), font=("", 10, "bold"))
-    select_label.pack(anchor=tk.W, pady=(0, 5))
+    toggle_btn = tk.Button(top_bar, text=_("gui_lang_toggle", current_lang),
+                           command=toggle_lang,
+                           bg=OLED_BG_CARD, fg=OLED_TEXT,
+                           font=OLED_FONT_SMALL, relief="flat",
+                           bd=0, padx=12, pady=4,
+                           activebackground=OLED_BG_HOVER,
+                           activeforeground=OLED_ACCENT,
+                           cursor="hand2")
+    toggle_btn.pack(side=tk.RIGHT, padx=12, pady=6)
 
-    # Profile quick-select buttons
-    profile_frame = ttk.Frame(main_frame)
-    profile_frame.pack(fill=tk.X, pady=(0, 5))
-    recommended_btn = ttk.Button(
-        profile_frame,
+    # ── Main content ──
+    content = tk.Frame(root, bg=OLED_BG)
+    content.pack(fill=tk.BOTH, expand=True, padx=12, pady=(0, 12))
+
+    # ── Profile quick-select ──
+    profile_frame = tk.Frame(content, bg=OLED_BG)
+    profile_frame.pack(fill=tk.X, pady=(12, 0))
+
+    select_label = tk.Label(profile_frame, text=_("gui_select", current_lang),
+                            bg=OLED_BG, fg=OLED_TEXT,
+                            font=OLED_FONT_HEADER, anchor=tk.W)
+    select_label.pack(fill=tk.X, pady=(0, 8))
+
+    profile_btn_frame = tk.Frame(profile_frame, bg=OLED_BG)
+    profile_btn_frame.pack(fill=tk.X)
+
+    btn_style = {"font": OLED_FONT_SMALL, "relief": "flat", "bd": 0,
+                 "cursor": "hand2", "padx": 14, "pady": 6}
+
+    recommended_btn = tk.Button(profile_btn_frame,
         text=f"{_('recommended', current_lang)} ({_('gui_recommended_hint', current_lang)})",
         command=lambda: set_profile("recommended"),
-    )
-    recommended_btn.pack(side=tk.LEFT, padx=(0, 5))
-    trusted_btn = ttk.Button(
-        profile_frame,
+        bg=OLED_BG_CARD, fg=OLED_TEXT,
+        activebackground=OLED_BG_HOVER, activeforeground=OLED_ACCENT,
+        **btn_style)
+    recommended_btn.pack(side=tk.LEFT, padx=(0, 6))
+
+    trusted_btn = tk.Button(profile_btn_frame,
         text=f"{_('trusted', current_lang)} ({_('gui_trusted_hint', current_lang)})",
         command=lambda: set_profile("trusted"),
-    )
-    trusted_btn.pack(side=tk.LEFT, padx=(0, 5))
-    all_btn = ttk.Button(
-        profile_frame,
+        bg=OLED_BG_CARD, fg=OLED_TEXT,
+        activebackground=OLED_BG_HOVER, activeforeground=OLED_ACCENT,
+        **btn_style)
+    trusted_btn.pack(side=tk.LEFT, padx=(0, 6))
+
+    all_btn = tk.Button(profile_btn_frame,
         text=f"{_('all', current_lang)} ({_('gui_all_hint', current_lang)})",
         command=lambda: set_profile("all"),
-    )
+        bg=OLED_BG_CARD, fg=OLED_TEXT,
+        activebackground=OLED_BG_HOVER, activeforeground=OLED_ACCENT,
+        **btn_style)
     all_btn.pack(side=tk.LEFT)
 
-    # Category checkboxes in a scrollable frame
-    canvas_frame = ttk.Frame(main_frame)
-    canvas_frame.pack(fill=tk.BOTH, expand=True, pady=(5, 5))
+    # ── Separator ──
+    sep = tk.Frame(content, bg=OLED_BORDER, height=1)
+    sep.pack(fill=tk.X, pady=(12, 8))
 
-    canvas = tk.Canvas(canvas_frame, highlightthickness=0)
-    scrollbar = ttk.Scrollbar(canvas_frame, orient=tk.VERTICAL, command=canvas.yview)
-    scrollable = ttk.Frame(canvas)
+    # ── Category checkboxes (scrollable) ──
+    canvas_frame = tk.Frame(content, bg=OLED_BG)
+    canvas_frame.pack(fill=tk.BOTH, expand=True, pady=(4, 8))
+
+    canvas = tk.Canvas(canvas_frame, bg=OLED_BG, highlightthickness=0,
+                       bd=0, relief="flat")
+    scrollbar = tk.Scrollbar(canvas_frame, orient=tk.VERTICAL,
+                             bg=OLED_BG_CARD, troughcolor=OLED_BG,
+                             activebackground=OLED_BORDER,
+                             bd=0, relief="flat")
+    scrollable = tk.Frame(canvas, bg=OLED_BG)
 
     scrollable.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
     canvas.create_window((0, 0), window=scrollable, anchor=tk.NW)
@@ -1295,8 +1495,8 @@ def gui_main(args: argparse.Namespace) -> None:
 
     canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    scrollbar.config(command=canvas.yview)
 
-    # Enable mousewheel scrolling
     def _on_mousewheel(event):
         canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
     canvas.bind_all("<MouseWheel>", _on_mousewheel)
@@ -1306,28 +1506,94 @@ def gui_main(args: argparse.Namespace) -> None:
         desc = cat.get("description", "")
         var = tk.BooleanVar(value=False)
         category_vars[cid] = var
-        cb = ttk.Checkbutton(
-            scrollable,
-            text=f"{cid} — {cat['name']}" + (f"  ({desc})" if desc else ""),
-            variable=var,
-        )
-        cb.pack(anchor=tk.W, padx=5, pady=1)
 
-    # Progress bar
-    progress_bar = ttk.Progressbar(main_frame, orient=tk.HORIZONTAL, mode="determinate")
-    progress_bar.pack(fill=tk.X, pady=(5, 5))
+        row = tk.Frame(scrollable, bg=OLED_BG_SEC, bd=0,
+                       highlightbackground=OLED_BORDER,
+                       highlightthickness=1, highlightcolor=OLED_BORDER)
+        row.pack(fill=tk.X, padx=0, pady=2)
 
-    # Log output
-    log_text = scrolledtext.ScrolledText(main_frame, height=12, font=("Consolas", 9), wrap=tk.WORD)
-    log_text.pack(fill=tk.BOTH, expand=True)
+        cb = tk.Checkbutton(row, text=f"  {cid} — {cat['name']}",
+                            variable=var,
+                            bg=OLED_BG_SEC, fg=OLED_TEXT,
+                            selectcolor=OLED_BG,
+                            activebackground=OLED_BG_HOVER,
+                            activeforeground=OLED_TEXT,
+                            font=OLED_FONT, relief="flat", bd=0,
+                            cursor="hand2")
+        cb.pack(side=tk.LEFT, padx=4, pady=4)
+        if desc:
+            desc_lbl = tk.Label(row, text=f"  {desc}",
+                                bg=OLED_BG_SEC, fg=OLED_TEXT_SEC,
+                                font=OLED_FONT_SMALL, anchor=tk.W)
+            desc_lbl.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 8))
 
-    # Bottom buttons
-    btn_frame = ttk.Frame(main_frame)
-    btn_frame.pack(fill=tk.X, pady=(5, 0))
-    cancel_btn = ttk.Button(btn_frame, text=_("gui_cancel", current_lang), command=root.destroy)
+    # ── Progress bar ──
+    progress_canvas = tk.Canvas(content, height=8, bg=OLED_BG,
+                                highlightthickness=0, bd=0)
+    progress_canvas.pack(fill=tk.X, pady=(0, 4))
+
+    def _draw_progress(val: float = 0, maximum: float = 100) -> None:
+        progress_canvas.delete("all")
+        w = progress_canvas.winfo_width() - 2
+        y = 1
+        h = 6
+        if w < 2:
+            w = 200
+        progress_canvas.create_rectangle(1, y, w + 1, y + h,
+                                          outline=OLED_BORDER, fill=OLED_BG_SEC,
+                                          width=0)
+        if maximum > 0:
+            fill_w = max(0, int(w * val / maximum))
+            progress_canvas.create_rectangle(1, y, fill_w + 1, y + h,
+                                              outline="", fill=OLED_ACCENT,
+                                              width=0)
+
+    progress_bar: dict[str, Any] = {"value": 0, "maximum": 100}
+    progress_bar["_draw"] = _draw_progress
+
+    # ── Log output (ScrolledText replacement with dark theme) ──
+    log_frame = tk.Frame(content, bg=OLED_BG)
+    log_frame.pack(fill=tk.BOTH, expand=True)
+
+    log_text = tk.Text(log_frame, height=10, wrap=tk.WORD,
+                       font=OLED_FONT_MONO, spacing1=1, spacing3=1)
+    _dark_text_widget(log_text)
+    log_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    log_scroll = tk.Scrollbar(log_frame, orient=tk.VERTICAL,
+                              command=log_text.yview,
+                              bg=OLED_BG_CARD, troughcolor=OLED_BG,
+                              activebackground=OLED_BORDER,
+                              bd=0, relief="flat")
+    log_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+    log_text.config(yscrollcommand=log_scroll.set)
+
+    # ── Bottom buttons ──
+    btn_frame = tk.Frame(content, bg=OLED_BG)
+    btn_frame.pack(fill=tk.X, pady=(8, 0))
+
+    cancel_btn = tk.Button(btn_frame, text=_("gui_cancel", current_lang),
+                           command=root.destroy,
+                           bg="#21262d", fg=OLED_TEXT,
+                           font=OLED_FONT, relief="flat", bd=0,
+                           padx=20, pady=8, cursor="hand2",
+                           activebackground=OLED_ERROR,
+                           activeforeground="#ffffff")
     cancel_btn.pack(side=tk.RIGHT)
-    install_btn = ttk.Button(btn_frame, text=_("gui_install", current_lang), command=run_install)
-    install_btn.pack(side=tk.RIGHT, padx=(0, 5))
+
+    install_btn = tk.Button(btn_frame, text=_("gui_install", current_lang),
+                            command=run_install,
+                            bg=OLED_ACCENT_DIM, fg=OLED_BG,
+                            font=OLED_FONT_HEADER, relief="flat", bd=0,
+                            padx=28, pady=8, cursor="hand2",
+                            activebackground=OLED_ACCENT,
+                            activeforeground=OLED_BG)
+    install_btn.pack(side=tk.RIGHT, padx=(0, 10))
+
+    # Override progress drawing on resize
+    def _on_resize(_event=None):
+        _draw_progress(progress_bar["value"], progress_bar["maximum"])
+    root.bind("<Configure>", _on_resize)
 
     root.mainloop()
 
