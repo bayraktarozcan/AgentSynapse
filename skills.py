@@ -483,7 +483,8 @@ def c(text: str, color: str = "") -> str:
 
 
 def color_for_cat(cat_id: str) -> str:
-    idx = abs(hash(cat_id)) % 6
+    import hashlib
+    idx = int(hashlib.md5(cat_id.encode()).hexdigest(), 16) % 6
     return ["cyan", "magenta", "blue", "green", "yellow", "white"][idx]
 
 
@@ -1461,6 +1462,8 @@ def gui_main(args: argparse.Namespace) -> None:
     def _on_mousewheel(event):
         canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
     canvas.bind_all("<MouseWheel>", _on_mousewheel)
+    canvas.bind_all("<Button-4>", lambda e: canvas.yview_scroll(-3, "units"))
+    canvas.bind_all("<Button-5>", lambda e: canvas.yview_scroll(3, "units"))
 
     for cat in categories:
         cid = cat["id"]
@@ -1499,8 +1502,7 @@ def gui_main(args: argparse.Namespace) -> None:
                                               outline="", fill=OLED_ACCENT,
                                               width=0)
 
-    progress_bar: dict[str, Any] = {"value": 0, "maximum": 100}
-    progress_bar["_draw"] = _draw_progress
+    progress_bar: dict[str, int] = {"value": 0, "maximum": 100}
 
     # ── Log output ──
     log_frame = ttk.Frame(content)
@@ -1531,8 +1533,14 @@ def gui_main(args: argparse.Namespace) -> None:
     install_btn.pack(side=tk.RIGHT, padx=(0, 10))
 
     # Override progress drawing on resize
+    _resize_after_id: str | None = None
+
     def _on_resize(_event=None):
-        _draw_progress(progress_bar["value"], progress_bar["maximum"])
+        nonlocal _resize_after_id
+        if _resize_after_id:
+            root.after_cancel(_resize_after_id)
+        _resize_after_id = root.after_idle(lambda: _draw_progress(progress_bar["value"], progress_bar["maximum"]))
+
     root.bind("<Configure>", _on_resize)
 
     root.mainloop()

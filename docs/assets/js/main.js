@@ -126,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', () => {
       const pre = btn.parentElement.querySelector('pre');
       if (!pre) return;
-      const text = pre.textContent.replace(/\u{275C}\s*/gu, '').trim();
+      const text = pre.textContent.replace(/\u{276E}\s*/gu, '').trim();
       navigator.clipboard.writeText(text).then(() => {
         btn.textContent = 'Copied!';
         btn.classList.add('copied');
