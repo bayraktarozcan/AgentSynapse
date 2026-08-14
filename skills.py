@@ -65,7 +65,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Show version",
         "usage": "Usage",
         "examples": "Examples",
-        "version_str": "AgentSynapse v1.0.1",
+        "version_str": "AgentSynapse v1.0.2",
         "processing": "Processing",
         "cloning": "cloning...",
         "cloned": "cloned",
@@ -169,7 +169,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Sürümü göster",
         "usage": "Kullanım",
         "examples": "Örnekler",
-        "version_str": "Agent Beceri Projesi v1.0.1",
+        "version_str": "Agent Beceri Projesi v1.0.2",
         "processing": "İşleniyor",
         "cloning": "klonlanıyor...",
         "cloned": "klonlandı",
@@ -256,7 +256,7 @@ def _(key: str, lang: str = "en") -> str:
 # ─────────────────────────────── EMBEDDED REPO DATA ───────────────────────────────
 
 REPOS: dict[str, Any] = {
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Embedded repository registry for AgentSynapse.",
     "categories": [
         {
@@ -1720,7 +1720,14 @@ def main() -> None:
             "tumu": "all",
             "tum": "all",
         }
-        targets = [alias_map.get(t.lower(), t) for t in args.targets] or ["recommended"]
+        _targets = [alias_map.get(t.lower(), t) for t in args.targets] or ["recommended"]
+        seen: set[str] = set()
+        targets: list[str] = []
+        for t in _targets:
+            key = t.lower()
+            if key not in seen:
+                seen.add(key)
+                targets.append(t)
 
         if args.dry_run:
             for target in targets:
