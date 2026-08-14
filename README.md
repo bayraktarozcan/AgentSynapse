@@ -156,10 +156,10 @@ python skills.py --lang tr --gui         # Grafik arayuzu baslat
 ## How It Works
 
 ```
-git clone --depth 1 <repo> -> parse SKILL.md frontmatter -> deduplicate -> copy to ~/.agents/skills/<name>/
+git clone --depth 1 --single-branch <repo> -> parse SKILL.md frontmatter -> deduplicate -> copy to ~/.agents/skills/<name>/
 ```
 
-1. **Clone** -- each repo is shallow-cloned to a temp directory.
+1. **Clone** -- each repo is shallow-cloned (single branch only) to a temp directory.
 2. **Parse** -- every `SKILL.md` is read for its `name:` field and subdirectory path.
 3. **Deduplicate** -- if two repos share a skill name, the higher-category (higher K number) copy wins.
 4. **Install** -- skills land in `~/.agents/skills/<name>/SKILL.md`.
@@ -378,10 +378,10 @@ python skills.py --lang tr --gui         # Grafik arayüzü başlat
 ## Nasıl Çalışır
 
 ```
-git clone --depth 1 <repo> -> SKILL.md ön yüzünü ayrıştır -> tekrarları temizle -> ~/.agents/skills/<name>/ konumuna kopyala
+git clone --depth 1 --single-branch <repo> -> SKILL.md ön yüzünü ayrıştır -> tekrarları temizle -> ~/.agents/skills/<name>/ konumuna kopyala
 ```
 
-1. **Klonla** -- her depo geçici dizine --depth 1 ile klonlanır.
+1. **Klonla** -- her depo geçici dizine --depth 1 --single-branch ile klonlanır (yalnızca tek dal).
 2. **Ayrıştır** -- her SKILL.md dosyasının `name:` alanı ve alt dizin yolu okunur.
 3. **Tekrarları temizle** -- iki depo aynı beceri adına sahipse, üst kategorideki (yüksek K) kazanır.
 4. **Kur** -- beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kopyalanır.

@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import hashlib
 import json
 import logging
 import os
@@ -64,7 +65,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Show version",
         "usage": "Usage",
         "examples": "Examples",
-        "version_str": "AgentSynapse v1.0.0",
+        "version_str": "AgentSynapse v1.0.1",
         "processing": "Processing",
         "cloning": "cloning...",
         "cloned": "cloned",
@@ -168,7 +169,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Sürümü göster",
         "usage": "Kullanım",
         "examples": "Örnekler",
-        "version_str": "Agent Beceri Projesi v1.0.0",
+        "version_str": "Agent Beceri Projesi v1.0.1",
         "processing": "İşleniyor",
         "cloning": "klonlanıyor...",
         "cloned": "klonlandı",
@@ -255,7 +256,7 @@ def _(key: str, lang: str = "en") -> str:
 # ─────────────────────────────── EMBEDDED REPO DATA ───────────────────────────────
 
 REPOS: dict[str, Any] = {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Embedded repository registry for AgentSynapse.",
     "categories": [
         {
@@ -406,10 +407,23 @@ DOC_FLAGS: dict[str, str] = {
 
 
 def _console_utf8() -> None:
+    """Best-effort UTF-8 bootstrap: switch legacy Windows console codepages
+    (cp125x) to UTF-8 and pin stdout/stderr so Unicode output never crashes
+    (e.g. box-drawing chars are unencodable in cp1254)."""
     if sys.platform == "win32":
-        import ctypes
-        k32 = ctypes.windll.kernel32
-        k32.SetConsoleOutputCP(65001)
+        try:
+            import ctypes
+            k32 = ctypes.windll.kernel32
+            k32.SetConsoleOutputCP(65001)
+            k32.SetConsoleCP(65001)
+        except Exception:
+            pass
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            if stream is not None and hasattr(stream, "reconfigure"):
+                stream.reconfigure(encoding="utf-8", errors="backslashreplace")
+        except (OSError, ValueError, AttributeError):
+            pass
 
 
 def show_doc(name: str, lang: str) -> None:
@@ -483,8 +497,7 @@ def c(text: str, color: str = "") -> str:
 
 
 def color_for_cat(cat_id: str) -> str:
-    import hashlib
-    idx = int(hashlib.md5(cat_id.encode()).hexdigest(), 16) % 6
+    idx = int(hashlib.sha256(cat_id.encode()).hexdigest(), 16) % 6
     return ["cyan", "magenta", "blue", "green", "yellow", "white"][idx]
 
 
@@ -583,7 +596,7 @@ def process_repo(
     for attempt in range(1, max_retries + 1):
         try:
             result = subprocess.run(
-                ["git", "clone", "--depth", "1", f"https://github.com/{repo}.git", str(tmpdir)],
+                ["git", "clone", "--depth", "1", "--single-branch", "--no-tags", f"https://github.com/{repo}.git", str(tmpdir)],
                 capture_output=True,
                 text=True,
                 timeout=300,
@@ -686,21 +699,23 @@ def process_repo(
             logging.warning(msg)
             print(c(f"    [{_('fix', lang)}] {msg}", "yellow"))
 
-            # Fix in file
-            try:
-                with open(mdfile, encoding="utf-8") as f:
-                    content = f.read()
-                content = re.sub(
-                    r"^name:\s*.*",
-                    f"name: {fixed_name}",
-                    content,
-                    count=1,
-                    flags=re.MULTILINE,
-                )
-                with open(mdfile, "w", encoding="utf-8") as f:
-                    f.write(content)
-            except OSError:
-                pass
+            # Only rewrite the frontmatter 'name:' line when we actually found
+            # one in the header; otherwise a bare re.sub could hit a body line.
+            if parsed_name:
+                try:
+                    with open(mdfile, encoding="utf-8") as f:
+                        content = f.read()
+                    content = re.sub(
+                        r"^name:\s*.*",
+                        f"name: {fixed_name}",
+                        content,
+                        count=1,
+                        flags=re.MULTILINE,
+                    )
+                    with open(mdfile, "w", encoding="utf-8") as f:
+                        f.write(content)
+                except OSError:
+                    pass
             name = fixed_name
             fixes += 1
 
@@ -954,14 +969,13 @@ def install(
 
     prev_id = ""
     prev_name = ""
-    prev_color = ""
     cat_ok = 0
     cat_fail = 0
     total_ok = 0
     total_fail = 0
     total_fixes = 0
 
-    for idx, (cat_id, cat_name, cat_color, repo, subpath) in enumerate(rows, 1):
+    for idx, (cat_id, cat_name, _cat_color, repo, subpath) in enumerate(rows, 1):
         if cat_id != prev_id:
             if prev_id:
                 col = color_for_cat(prev_id)
@@ -976,7 +990,6 @@ def install(
                 )
             prev_id = cat_id
             prev_name = cat_name
-            prev_color = cat_color
             cat_ok = 0
             cat_fail = 0
             col = color_for_cat(cat_id)
@@ -1267,6 +1280,8 @@ def gui_main(args: argparse.Namespace) -> None:
     current_lang = lang
     category_vars: dict[str, tk.BooleanVar] = {}
     categories = list_categories(current_lang)
+    last_profile: str | None = None
+    programmatic_set = False
 
     # ── Functions ──
     def toggle_lang() -> None:
@@ -1288,31 +1303,42 @@ def gui_main(args: argparse.Namespace) -> None:
         )
         all_btn.config(text=f"{_('all', current_lang)} ({_('gui_all_hint', current_lang)})")
 
+    def _on_var_change(*_args) -> None:
+        nonlocal last_profile
+        if not programmatic_set:
+            last_profile = None
+
     def set_profile(profile: str) -> None:
+        nonlocal last_profile, programmatic_set
         trusted_ids = {"K1", "K2", "K3", "K4", "K5", "K6", "K7", "K8"}
+        last_profile = profile
+        programmatic_set = True
         data = load_config(current_lang)
-        for cat in data.get("categories", []):
-            cid = cat["id"]
-            if profile == "all":
-                checked = True
-            elif profile == "trusted":
-                checked = cid in trusted_ids
-            elif profile == "recommended":
-                has_per_repo = any(
-                    r.get("recommended") is not None for r in cat.get("repos", [])
-                )
-                if cat.get("recommended") is False:
-                    checked = False
-                elif has_per_repo:
-                    checked = any(
-                        r.get("recommended") for r in cat.get("repos", [])
-                    )
-                else:
+        try:
+            for cat in data.get("categories", []):
+                cid = cat["id"]
+                if profile == "all":
                     checked = True
-            else:
-                checked = False
-            if cid in category_vars:
-                category_vars[cid].set(checked)
+                elif profile == "trusted":
+                    checked = cid in trusted_ids
+                elif profile == "recommended":
+                    has_per_repo = any(
+                        r.get("recommended") is not None for r in cat.get("repos", [])
+                    )
+                    if cat.get("recommended") is False:
+                        checked = False
+                    elif has_per_repo:
+                        checked = any(
+                            r.get("recommended") for r in cat.get("repos", [])
+                        )
+                    else:
+                        checked = True
+                else:
+                    checked = False
+                if cid in category_vars:
+                    category_vars[cid].set(checked)
+        finally:
+            programmatic_set = False
 
     def run_install() -> None:
         selected = [cid for cid, var in category_vars.items() if var.get()]
@@ -1324,17 +1350,29 @@ def gui_main(args: argparse.Namespace) -> None:
         cancel_btn.config(state="disabled")
         log_text.delete("1.0", tk.END)
         progress_bar["value"] = 0
-        progress_bar["maximum"] = len(selected)
 
-        data = load_config(current_lang)
-        rows: list[tuple[str, str, str, str, str]] = []
-        cat_map = {c["id"]: c for c in data.get("categories", [])}
-        for cid in selected:
-            cat = cat_map.get(cid)
-            if not cat:
-                continue
-            for r in cat.get("repos", []):
-                rows.append((cid, cat["name"], cat.get("color", "white"), r["repo"], r.get("subpath", "")))
+        # "Recommended" honors per-repo filtering like the CLI; any manual
+        # checkbox change clears last_profile and installs full categories.
+        if last_profile == "recommended":
+            rows = [
+                r for r in list_repos("recommended", current_lang)
+                if r[0] in selected
+            ]
+        else:
+            data = load_config(current_lang)
+            cat_map = {c["id"]: c for c in data.get("categories", [])}
+            rows = []
+            for cid in selected:
+                cat = cat_map.get(cid)
+                if not cat:
+                    continue
+                for r in cat.get("repos", []):
+                    rows.append((cid, cat["name"], cat.get("color", "white"), r["repo"], r.get("subpath", "")))
+
+        if not rows:
+            install_btn.config(state="normal", text=_("gui_install", current_lang))
+            cancel_btn.config(state="normal")
+            return
 
         progress_bar["maximum"] = len(rows)
         ok_count = 0
@@ -1342,7 +1380,7 @@ def gui_main(args: argparse.Namespace) -> None:
         fix_count = 0
 
         prev_id = ""
-        for idx, (cat_id, cat_name, _, repo, subpath) in enumerate(rows):
+        for idx, (cat_id, cat_name, _cat_color, repo, subpath) in enumerate(rows):
             if cat_id != prev_id:
                 prev_id = cat_id
                 _gui_log(log_text, f"\n{'='*50}\n   {cat_id} — {cat_name}\n{'='*50}\n", "bold")
@@ -1469,6 +1507,7 @@ def gui_main(args: argparse.Namespace) -> None:
         cid = cat["id"]
         desc = cat.get("description", "")
         var = tk.BooleanVar(value=False)
+        var.trace_add("write", _on_var_change)
         category_vars[cid] = var
 
         row = ttk.Frame(scrollable, style="Category.TFrame")
@@ -1621,12 +1660,18 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
 def main() -> None:
     global SKILLS_DIR, AGENTS_DIR
 
+    _console_utf8()
+
     if sys.version_info < (3, 8):
         print(f"Error: {_('python_version', 'en')} {sys.version}")
         sys.exit(1)
 
     args = _parse_args(sys.argv[1:])
     lang = args.lang or _detect_lang()
+
+    if args.prefix:
+        SKILLS_DIR = Path(args.prefix).resolve()
+        AGENTS_DIR = SKILLS_DIR.parent
 
     if args.help:
         _show_general_help(lang)
@@ -1681,10 +1726,6 @@ def main() -> None:
             for target in targets:
                 _dry_run_list(target, lang)
             return
-
-        if args.prefix:
-            SKILLS_DIR = Path(args.prefix).resolve()
-            AGENTS_DIR = SKILLS_DIR.parent
 
         setup_logging(lang)
         total_ok = 0
