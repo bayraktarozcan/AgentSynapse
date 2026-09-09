@@ -15,10 +15,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.2] - 2026-08-15
+## [1.0.2] - 2026-09-09
+
+### Changed
+
+- Sparse partial clone for `subpath` repos (`--filter=blob:none --sparse` + `sparse-checkout set`) keeps huge monorepos (e.g. `metabase/metabase`) installable without downloading the full tree.
+- Only `SKILL.md` is copied per skill folder; references, scripts, templates and nested dirs are no longer installed (`~/.agents/skills/<name>/` is clean).
+- Cross-repo name collisions are now surfaced: reinstalling over a different source with different content logs a `[WARN] ... overwriting` message instead of silently replacing the file.
+- Success estimates refreshed in help/README/docs: Recommended profile measured 566+ skills (2026-09-09), table updated from stale ~450.
 
 ### Fixed
 
+- GUI progress bar now redraws live during install (previously only refreshed on window resize).
+- `process_repo` no longer aborts the whole install when a partial-clone blob read fails; a failed copy is logged and counted instead of crashing.
+- Clone timeout now includes the timeout detail in the log/error message.
 - **Duplicate install targets**: CLI install/dry-run targets are now deduplicated case-insensitively (e.g. `K2 K2`, `K2 k2`) and across profile aliases (e.g. `recommended onerilen`, `tum tumu` collapse to one run).
 
 ## [1.0.1] - 2026-08-15
@@ -84,10 +94,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
 
-## [1.0.2] - 2026-08-15
+## [1.0.2] - 2026-09-09
+
+### Değişiklikler
+
+- **Kısmi (sparse) klonlama**: `subpath`'li depolar `--filter=blob:none --sparse` + `sparse-checkout set` ile klonlanıyor; dev monorepolarda (örn. `metabase/metabase`) tüm ağaç indirilmeden kurulum yapılabiliyor.
+- **Yalnızca SKILL.md kopyalanıyor**: beceri klasörü başına artık sadece `SKILL.md` kuruluyor; referanslar, script'ler, şablonlar ve iç içe klasörler kuruluma girmez (`~/.agents/skills/<ad>/` temiz).
+- **Çapraz-depo isim çakışmaları görünür kılındı**: farklı kaynak ve farklı içerikle aynı ad üzerine kurulum yapılırsa `[WARN] ... overwriting` mesajı loglanıyor; sessiz üzerine yazma sona erdi.
+- Yardım/README dok sayıları güncellendi: Recommended profili 566+ beceri olarak ölçüldü (2026-09-09), eski ~450 tablosu güncellendi.
 
 ### Düzeltmeler
 
+- GUI ilerleme çubuğu artık kurulum sırasında canlı çiziliyor (önceden yalnızca pencere yeniden boyutlanınca yenileniyordu).
+- `process_repo` kısmi klon blob okuma hatasında tüm kurulumu durdurmuyor; hatalı kopya loglanıp geçiliyor.
+- Klon zaman aşımı hatası artık ayrıntıyı log/mesaja dahil ediyor.
 - **Mükerrer kurulum hedefleri**: CLI kurulum/dry-run hedefleri artık büyük/küçük harfe duyarsız (örn. `K2 K2`, `K2 k2`) ve profil takma adları arasında (örn. `recommended onerilen`, `tum tumu` tek çalıştırmaya iner) tekilleştiriliyor.
 
 ## [1.0.1] - 2026-08-15

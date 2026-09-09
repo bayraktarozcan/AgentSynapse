@@ -10,9 +10,9 @@
 <details open>
 <summary><b>English</b></summary>
 
-**450+ curated AI agent skills** from 34 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
+**570+ curated AI agent skills** from 34 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
 
-[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Skills](https://img.shields.io/badge/skills-570%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
@@ -76,8 +76,8 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 | Command | Scope | Repos | Skills (approx) |
 |---------|-------|-------|-----------------|
-| `python skills.py` | Recommended | 34 | ~450 |
-| `python skills.py trusted` | Trusted (K1-K8) | 39 | ~600 |
+| `python skills.py` | Recommended | 34 | ~570 |
+| `python skills.py trusted` | Trusted (K1-K8) | 39 | ~640 |
 | `python skills.py all` | All (K1-K10) | 48 | ~995 |
 
 ### Categories

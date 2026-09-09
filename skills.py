@@ -44,8 +44,8 @@ S: dict[str, dict[str, str]] = {
         "recommended": "Recommended",
         "trusted": "Trusted",
         "all": "All",
-        "profile_recommended_desc": "Curated subset (~450 skills)",
-        "profile_trusted_desc": "K1-K8 -- all trusted categories (~600 skills)",
+        "profile_recommended_desc": "Curated subset (~570 skills)",
+        "profile_trusted_desc": "K1-K8 -- all trusted categories (~640 skills)",
         "profile_all_desc": "K1-K10 -- everything (~995 skills)",
         "category": "Category",
         "categories": "Categories",
@@ -77,6 +77,8 @@ S: dict[str, dict[str, str]] = {
         "not_found": "not found",
         "timeout": "operation timed out",
         "subpath_not_found": "subpath not found",
+        "overwrite_same_name": "already exists with different content from another repo; overwriting",
+        "copy_failed": "failed to copy",
         "ok": "OK",
         "warn": "WARN",
         "error": "ERROR",
@@ -148,8 +150,8 @@ S: dict[str, dict[str, str]] = {
         "recommended": "Önerilen",
         "trusted": "Güvenli",
         "all": "Tümü",
-        "profile_recommended_desc": "Küratörlü alt küme (~450 beceri)",
-        "profile_trusted_desc": "K1-K8 -- tum guvenli kategoriler (~600 beceri)",
+        "profile_recommended_desc": "Küratörlü alt küme (~570 beceri)",
+        "profile_trusted_desc": "K1-K8 -- tum guvenli kategoriler (~640 beceri)",
         "profile_all_desc": "K1-K10 -- her sey (~995 beceri)",
         "category": "Kategori",
         "categories": "Kategoriler",
@@ -181,6 +183,8 @@ S: dict[str, dict[str, str]] = {
         "not_found": "bulunamadı",
         "timeout": "işlem zaman aşımına uğradı",
         "subpath_not_found": "alt klasör bulunamadı",
+        "overwrite_same_name": "başka bir depodan farklı içerikle zaten var; üzerine yazılıyor",
+        "copy_failed": "kopyalama başarısız",
         "ok": "TAMAM",
         "warn": "UYARI",
         "error": "HATA",
@@ -581,7 +585,7 @@ def process_repo(
 ) -> tuple[int, int]:
     """
     Clone repo, find SKILL.md files, copy to SKILLS_DIR.
-    Retries up to 2 times on clone failure.
+    Tries up to 3 attempts (2 retries) on clone failure.
     Returns (skill_count, fix_count).
     """
     safe_name = repo.replace("/", "-")
@@ -595,12 +599,22 @@ def process_repo(
 
     for attempt in range(1, max_retries + 1):
         try:
-            result = subprocess.run(
-                ["git", "clone", "--depth", "1", "--single-branch", "--no-tags", f"https://github.com/{repo}.git", str(tmpdir)],
-                capture_output=True,
-                text=True,
-                timeout=300,
-            )
+            clone_cmd = [
+                "git", "clone", "--depth", "1", "--single-branch", "--no-tags", "--filter=blob:none",
+            ]
+            if subpath:
+                clone_cmd.append("--sparse")
+            clone_cmd += [f"https://github.com/{repo}.git", str(tmpdir)]
+            result = subprocess.run(clone_cmd, capture_output=True, text=True, timeout=300)
+            if result.returncode == 0 and subpath:
+                sc = subprocess.run(
+                    ["git", "-C", str(tmpdir), "sparse-checkout", "set", subpath],
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                )
+                if sc.returncode != 0:
+                    logging.warning(f"[WARN] {repo} sparse-checkout '{subpath}' failed: {sc.stderr.strip()}")
         except FileNotFoundError:
             logging.error(f"[ERROR] git {_('not_found', lang)}")
             print(c(f"  [{_('error', lang)}] git {_('not_found', lang)}", "red"))
@@ -608,8 +622,8 @@ def process_repo(
             cleanup(tmpdir)
             return 0, 0
         except subprocess.TimeoutExpired as exc:
-            last_error = str(exc)
-            logging.error(f"[ERROR] {repo} — {_('timeout', lang)} (attempt {attempt}/{max_retries})")
+            last_error = str(exc)[:200]
+            logging.error(f"[ERROR] {repo} — {_('timeout', lang)} (attempt {attempt}/{max_retries}): {last_error}")
             print(c(f"  [{_('error', lang)}] {repo} — {_('timeout', lang)}", "red"))
             cleanup(tmpdir)
             if attempt < max_retries:
@@ -730,7 +744,24 @@ def process_repo(
             continue
 
         dest.mkdir(parents=True, exist_ok=True)
-        _copy_recursive(skill_dir, dest)
+        dest_file = dest / mdfile.name
+
+        # Transparency: if a skill of the same name already exists with
+        # different content (i.e. a different source repo), surface it.
+        try:
+            if dest_file.is_file() and dest_file.read_bytes() != mdfile.read_bytes():
+                msg = f"[{_('warn', lang)}] {name} {_('overwrite_same_name', lang)}"
+                logging.warning(msg)
+                print(c(f"    {msg}", "yellow"))
+        except OSError:
+            pass
+
+        try:
+            shutil.copy2(mdfile, dest_file)
+        except OSError as exc:
+            logging.error(f"[ERROR] {name} — {_('copy_failed', lang)}: {exc}")
+            print(c(f"  [{_('error', lang)}] {name} — {_('copy_failed', lang)}", "red"))
+            continue
         count += 1
 
     cleanup(tmpdir)
@@ -748,18 +779,6 @@ def process_repo(
     if fixes > 0:
         print(c(f"       {fixes} {_('names_fixed', lang)}", "yellow"))
     return count, fixes
-
-
-def _copy_recursive(src: Path, dst: Path) -> None:
-    """Copy all files from src to dst, merging directories."""
-    for item in src.iterdir():
-        s = src / item.name
-        d = dst / item.name
-        if s.is_dir():
-            _copy_recursive(s, d)
-        else:
-            d.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(s, d)
 
 
 # ─────────────────────────────── PROACTIVE ERROR HANDLING ───────────────────────────────
@@ -927,7 +946,7 @@ def _dry_run_list(target: str, lang: str) -> None:
     skill_est = 0
     for cat_id, cat_name, cat_color, repo, subpath in rows:
         cat_map.setdefault(f"{cat_id} — {cat_name}", []).append(repo + (f" ({_('subpath', lang)}: {subpath})" if subpath else ""))
-        skill_est += 10
+        skill_est += 17
     print(c(f"\n  [{_('dry_run', lang).upper()}]", "white"))
     print(c("=" * 55, "white"))
     for cat_header, repos_list in cat_map.items():
@@ -1400,9 +1419,11 @@ def gui_main(args: argparse.Namespace) -> None:
                 fail_count += 1
 
             progress_bar["value"] = idx + 1
+            _draw_progress(progress_bar["value"], progress_bar["maximum"])
             root.update_idletasks()
 
         progress_bar["value"] = progress_bar["maximum"]
+        _draw_progress(progress_bar["value"], progress_bar["maximum"])
         _gui_log(
             log_text,
             f"\n{'='*55}\n"
@@ -1542,6 +1563,9 @@ def gui_main(args: argparse.Namespace) -> None:
                                               width=0)
 
     progress_bar: dict[str, int] = {"value": 0, "maximum": 100}
+
+    # Draw the empty bar once the window is mapped (width known).
+    root.after(50, lambda: _draw_progress(progress_bar["value"], progress_bar["maximum"]))
 
     # ── Log output ──
     log_frame = ttk.Frame(content)
