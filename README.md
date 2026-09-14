@@ -10,9 +10,9 @@
 <details open>
 <summary><b>English</b></summary>
 
-**570+ curated AI agent skills** from 34 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
+**566+ curated AI agent skills** from 34 top-tier repositories, organized into 10 functional categories, installable in one command. Built for [Claude Code](https://docs.anthropic.com/en/docs/claude-code/overview), [OpenCode](https://opencode.ai), and any agent framework that reads SKILL.md.
 
-[![Skills](https://img.shields.io/badge/skills-570%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Skills](https://img.shields.io/badge/skills-566%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
@@ -25,7 +25,7 @@
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
-# Recommended -- 450+ curated skills (default)
+# Recommended -- 566+ curated skills (default)
 python skills.py
 
 # Or if Python 3 is installed as python3:
@@ -76,9 +76,27 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 | Command | Scope | Repos | Skills (approx) |
 |---------|-------|-------|-----------------|
-| `python skills.py` | Recommended | 34 | ~570 |
+| `python skills.py` | Recommended | 34 | ~566 |
 | `python skills.py trusted` | Trusted (K1-K8) | 39 | ~640 |
 | `python skills.py all` | All (K1-K10) | 48 | ~995 |
+
+### Specialization
+
+`skill-specialization.json` maps every skill to a specialization class (C1–C5). The `--profile` flag scopes what stays installed:
+
+| Profile | Classes | Skills |
+|---------|---------|--------|
+| `temel` | C1, C2 | 222 |
+| `dengeli` | C1, C2, C3, first 76 of C4 | 355 |
+| `tam` (default) | All C1–C5 | 566 |
+
+After an install with `--profile temel` or `--profile dengeli`, out-of-profile skills are moved to `~/.agents/_quarantine_<profile>_<date>/` (a `_moved-list.txt` is written). Preview with `--dry-run`, inspect via `--list` / `--check`:
+
+```bash
+python skills.py --dry-run --profile temel    # preview what would move
+python skills.py --check --profile dengeli    # coverage report
+python skills.py --list --profile temel       # profile map
+```
 
 ### Categories
 
@@ -110,6 +128,7 @@ python skills.py K2 K4 K6    # AI + Frontend + Security
 | `--lang en` | Force English |
 | `--dry-run` | Preview repos without installing |
 | `--prefix PATH` | Custom install directory |
+| `--profile P` | Enforce specialization profile (temel, dengeli, tam; default tam) |
 | `--uninstall` | Remove all installed skills |
 | `--check` | Pre-flight environment check (Python, Git, network, disk) |
 | `--list` | List available categories |
@@ -181,6 +200,7 @@ AgentSynapse/
 +-- Legacy/              # Archived files from earlier project versions (skills.ps1, karar.md)
 +-- Logs/                # Timestamped install logs (auto-generated)
 +-- skills-tree_*.txt    # Timestamped directory tree per run (auto-generated)
++-- skill-specialization.json # Specialization manifest (566 skills, C1-C5)
 +-- .github/             # Issue templates, funding, dependabot
 ```
 
@@ -194,7 +214,7 @@ git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
 # Run regression
-python skills.py recommended           # 34 repos, ~450 skills
+python skills.py recommended           # 34 repos, ~566 skills
 python skills.py trusted               # 39 repos, ~600 skills
 python skills.py all                   # 48 repos, ~995 skills
 ```
@@ -238,9 +258,9 @@ Built for the AI agent community.
 
 <a id="tr"></a>
 
-**450'den fazla küratörlü AI ajan becerisi**, 34 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
+**566'dan fazla küratörlü AI ajan becerisi**, 34 üst düzey depodan alınmış, 10 işlevsel kategoriye ayrılmış, tek komutla yüklenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan çerçevesi için üretilmiştir.
 
-[![Skills](https://img.shields.io/badge/skills-450%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
+[![Skills](https://img.shields.io/badge/skills-566%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Categories](https://img.shields.io/badge/categories-10-purple?style=flat-square&color=bc8cff)](#category-reference)
 [![License](https://img.shields.io/badge/license-MIT-yellow?style=flat-square)](LICENSE)
@@ -253,7 +273,7 @@ Built for the AI agent community.
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
-# Önerilen -- 450+ küratörlü beceri (varsayılan)
+# Önerilen -- 566+ küratörlü beceri (varsayılan)
 python skills.py
 
 # Veya Python 3, python3 olarak yüklendiyse:
@@ -304,9 +324,27 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 
 | Komut | Kapsam | Depo | Beceri (yaklaşık) |
 |-------|--------|------|--------------------|
-| `python skills.py` | Önerilen | 34 | ~450 |
+| `python skills.py` | Önerilen | 34 | ~566 |
 | `python skills.py trusted` | Güvenli (K1-K8) | 39 | ~600 |
 | `python skills.py all` | Tümü (K1-K10) | 48 | ~995 |
+
+### Uzmanlaşma
+
+`skill-specialization.json`, her beceriyi bir uzmanlaşma sınıfına (C1–C5) eşler. `--profile` bayrağı neyin kurulu kalacağını kapsamlar:
+
+| Profil | Sınıflar | Beceri |
+|--------|----------|--------|
+| `temel` | C1, C2 | 222 |
+| `dengeli` | C1, C2, C3, C4'ün ilk 76'sı | 355 |
+| `tam` (varsayılan) | Tüm C1–C5 | 566 |
+
+`--profile temel` veya `--profile dengeli` ile yapılan bir kurulumun ardından profil dışı beceriler `~/.agents/_quarantine_<profil>_<tarih>/` klasörüne taşınır (`_moved-list.txt` yazılır). `--dry-run` ile önizleyin, `--list` / `--check` ile inceleyin:
+
+```bash
+python skills.py --dry-run --profile temel    # neyin taşınacağını önizle
+python skills.py --check --profile dengeli    # kapsam raporu
+python skills.py --list --profile temel       # profil haritası
+```
 
 ### Kategoriler
 
@@ -332,6 +370,7 @@ python skills.py K10         # Risk (opsiyonel)
 | `--lang en` | İngilizce'yi zorla |
 | `--dry-run` | Repoları kurmadan önizle |
 | `--prefix PATH` | Özel kurulum dizini |
+| `--profile P` | Uzmanlaşma profilini uygula (temel, dengeli, tam; varsayılan tam) |
 | `--uninstall` | Tüm becerileri kaldır |
 | `--check` | Ön uçuş ortam kontrolü (Python, Git, ağ, disk) |
 | `--list` | Kategorileri listele |
@@ -403,6 +442,7 @@ AgentSynapse/
 +-- Legacy/              # Önceki proje sürümlerinden arşiv dosyaları (skills.ps1, karar.md)
 +-- Logs/                # Zaman damgalı kurulum günlükleri (otomatik)
 +-- skills-tree_*.txt    # Çalıştırma başına zaman damgalı klasör ağacı (otomatik)
++-- skill-specialization.json # Uzmanlaşma manifesti (566 beceri, C1-C5)
 +-- .github/             # Issue şablonları, finansman, dependabot
 ```
 
@@ -416,7 +456,7 @@ git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
 # Regresyon testi
-python skills.py recommended           # 34 depo, ~450 beceri
+python skills.py recommended           # 34 depo, ~566 beceri
 python skills.py trusted               # 39 depo, ~600 beceri
 python skills.py all                   # 48 depo, ~995 beceri
 ```

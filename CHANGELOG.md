@@ -15,6 +15,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-09-09
+
+### Added
+
+- **Specialization profiles** — `--profile temel|dengeli|tam` scopes what stays installed in `~/.agents/skills/`: `temel` (222 skills, classes C1+C2), `dengeli` (355, classes C1+C2+C3 plus the first 76 of C4), `tam` (566, everything; the default).
+- **`skill-specialization.json`** — bundled manifest mapping all 566 skills to specialization classes C1–C5 (counts 185/37/57/190/97).
+- **`--list` specialization map** — prints the classes, per-class counts and the three profiles, marking the active one.
+- **`--check` profile coverage** — reports installed-vs-expected per profile and per-class installed counts.
+- **Post-install reconciliation** — when a profile other than `tam` is used, out-of-profile skills move to `~/.agents/_quarantine_<profile>_<date>/` with a `_moved-list.txt`; `--dry-run` previews what would move.
+- **Version bump to 1.1.0** — `--version` now reports `AgentSynapse v1.1.0`.
+
 ## [1.0.2] - 2026-09-09
 
 ### Changed
@@ -93,6 +104,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <a id="tr"></a>
 
 Projedeki tüm kayda değer değişiklikler bu dosyada belgelenmiştir.
+
+## [1.1.0] - 2026-09-09
+
+### Eklenenler
+
+- **Uzmanlaşma profilleri** — `--profile temel|dengeli|tam`, `~/.agents/skills/` klasöründe neyin kurulu kalacağını kapsamlar: `temel` (222 beceri, C1+C2 sınıfları), `dengeli` (355, C1+C2+C3 sınıfları artı C4'ün ilk 76'sı), `tam` (566, hepsi; varsayılan).
+- **`skill-specialization.json`** — tüm 566 beceriyi C1–C5 uzmanlaşma sınıflarına eşleyen gömülü manifest (sayılar 185/37/57/190/97).
+- **`--list` uzmanlaşma haritası** — sınıfları, sınıf başına sayıları ve üç profili yazdırır, aktif olanı işaretler.
+- **`--check` profil kapsamı** — profil başına kurulu/beklenen ve sınıf başına kurulu sayıları raporlar.
+- **Kurulum sonrası uzlaştırma** — `tam` dışında bir profil kullanıldığında profil dışı beceriler `~/.agents/_quarantine_<profil>_<tarih>/` klasörüne taşınır (`_moved-list.txt` yazılır); `--dry-run` neyin taşınacağını önizler.
+- **Sürüm 1.1.0'a yükseltildi** — `--version` artık `Agent Beceri Projesi v1.1.0` gösterir.
 
 ## [1.0.2] - 2026-09-09
 

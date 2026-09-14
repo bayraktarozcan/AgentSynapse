@@ -12,6 +12,7 @@ Usage:
   python skills.py --lang tr               Force Turkish language
   python skills.py --dry-run               Preview repos without installing
   python skills.py --prefix PATH           Install to custom directory
+  python skills.py --profile temel         Enforce specialization profile (temel|dengeli|tam)
   python skills.py --uninstall             Remove all installed skills
   python skills.py --check                 Run pre-flight environment check
   python skills.py --list                  List available categories
@@ -65,7 +66,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Show version",
         "usage": "Usage",
         "examples": "Examples",
-        "version_str": "AgentSynapse v1.0.2",
+        "version_str": "AgentSynapse v1.1.0",
         "processing": "Processing",
         "cloning": "cloning...",
         "cloned": "cloned",
@@ -143,6 +144,25 @@ S: dict[str, dict[str, str]] = {
         "post_verify_title": "====== Post-Install Verification ======",
         "post_verify_count": "Installed skill directories: {count}",
         "post_verify_empty": "No skill directories found in {path}",
+        "profile": "Specialization profile",
+        "profile_opt": "Specialization profile (temel|dengeli|tam, default: tam)",
+        "manifest_missing": "Manifest not found: {path}",
+        "manifest_invalid": "Manifest invalid JSON",
+        "manifest_title": "====== Specialization Map ======",
+        "manifest_classes": "Classes",
+        "manifest_profiles": "Profiles",
+        "installed_by_class": "Installed skills by class",
+        "unknown_kept": "Skills not in the map (kept): {count}",
+        "coverage": "Profile coverage: {actual}/{expected} installed",
+        "reconcile_title": "====== Profile Reconciliation ======",
+        "reconcile_moved": "Moved out of profile: {count}",
+        "reconcile_kept": "Kept (in profile): {count}",
+        "reconcile_skipped": "Already quarantined (skipped): {count}",
+        "reconcile_none": "Nothing to move \u2014 profile already satisfied",
+        "reconcile_quarantine": "Quarantine: {path}",
+        "reconcile_moved_list": "Moved list: {path}",
+        "reconcile_dry_run": "dry run \u2014 would move {count} skills",
+        "unknown_profile": "Unknown profile: {profile}",
     },
     "tr": {
         "app_name": "Agent Beceri Projesi",
@@ -171,7 +191,7 @@ S: dict[str, dict[str, str]] = {
         "version": "Sürümü göster",
         "usage": "Kullanım",
         "examples": "Örnekler",
-        "version_str": "Agent Beceri Projesi v1.0.2",
+        "version_str": "Agent Beceri Projesi v1.1.0",
         "processing": "İşleniyor",
         "cloning": "klonlanıyor...",
         "cloned": "klonlandı",
@@ -249,6 +269,25 @@ S: dict[str, dict[str, str]] = {
         "post_verify_title": "====== Kurulum Sonrasi Dogrulama ======",
         "post_verify_count": "Yuklenen beceri klasoru sayisi: {count}",
         "post_verify_empty": "{path} klasorunde beceri bulunamadi",
+        "profile": "Uzmanlasma profili",
+        "profile_opt": "Uzmanlasma profili (temel|dengeli|tam, varsayilan: tam)",
+        "manifest_missing": "Manifest bulunamadi: {path}",
+        "manifest_invalid": "Manifest gecersiz JSON",
+        "manifest_title": "====== Uzmanlasma Haritasi ======",
+        "manifest_classes": "Siniflar",
+        "manifest_profiles": "Profiller",
+        "installed_by_class": "Sinifa gore kurulu beceriler",
+        "unknown_kept": "Haritada olmayan beceriler (korundu): {count}",
+        "coverage": "Profil kapsami: {actual}/{expected} kurulu",
+        "reconcile_title": "====== Profil Uzlastirmasi ======",
+        "reconcile_moved": "Profil disina tasindi: {count}",
+        "reconcile_kept": "Korundu (profilde): {count}",
+        "reconcile_skipped": "Zaten karantinada (atlandi): {count}",
+        "reconcile_none": "Tasinacak bir sey yok — profil zaten saglanmis",
+        "reconcile_quarantine": "Karantina: {path}",
+        "reconcile_moved_list": "Tasinan liste: {path}",
+        "reconcile_dry_run": "kuru calisma — {count} beceri tasinirdi",
+        "unknown_profile": "Bilinmeyen profil: {profile}",
     },
 }
 
@@ -1609,6 +1648,193 @@ def gui_main(args: argparse.Namespace) -> None:
     root.mainloop()
 
 
+# ─────────────────────────────── SPECIALIZATION ───────────────────────────────
+
+MANIFEST_NAME = "skill-specialization.json"
+_CLASS_COLORS: dict[str, str] = {
+    "C1": "green",
+    "C2": "cyan",
+    "C3": "yellow",
+    "C4": "magenta",
+    "C5": "red",
+}
+
+
+def _manifest_path() -> Path:
+    return Path(__file__).resolve().parent / MANIFEST_NAME
+
+
+def load_manifest(lang: str = "en") -> dict[str, Any] | None:
+    """Load the specialization map; None (with a warning) when missing/invalid."""
+    path = _manifest_path()
+    if not path.is_file():
+        print(c(f"  [{_('warn', lang)}] {_('manifest_missing', lang).format(path=str(path))}", "yellow"))
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        print(c(f"  [{_('warn', lang)}] {_('manifest_invalid', lang)}: {e}", "yellow"))
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def manifest_skills(m: dict[str, Any]) -> dict[str, str]:
+    """Map skill name -> specialization class id."""
+    return {n: cid for n, cid in m.get("skills", {}).items()}
+
+
+def profile_members(m: dict[str, Any], profile: str) -> set[str] | None:
+    """Skill names belonging to a profile. None when the profile is unknown."""
+    prof = m.get("profiles", {}).get(profile)
+    if not prof:
+        return None
+    classes = set(prof.get("classes", []))
+    names = manifest_skills(m)
+    members = {n for n, cid in names.items() if cid in classes}
+    members.update(prof.get("partial", {}).get("selected", []))
+    return members
+
+
+def installed_skills(m: dict[str, Any]) -> tuple[list[tuple[str, str]], list[str]]:
+    """Scan SKILLS_DIR. Returns ([(name, class_id)], [name not in the map])."""
+    if not SKILLS_DIR.is_dir():
+        return [], []
+    cls_of = manifest_skills(m)
+    known: list[tuple[str, str]] = []
+    unknown: list[str] = []
+    for entry in sorted(SKILLS_DIR.iterdir()):
+        if not entry.is_dir() or entry.name.startswith("."):
+            continue
+        if (entry / "SKILL.md").is_file():
+            cid = cls_of.get(entry.name, "")
+            if cid:
+                known.append((entry.name, cid))
+            else:
+                unknown.append(entry.name)
+    return known, unknown
+
+
+def print_manifest_summary(m: dict[str, Any], profile: str, lang: str) -> None:
+    """Class and profile overview shown by --list."""
+    print(c("=" * 55, "cyan"))
+    print(c(f"  {_('manifest_title', lang)}", "cyan"))
+    print(c("=" * 55, "cyan"))
+    print(c(f"  {_('manifest_classes', lang)}:", "cyan"))
+    for cid in ("C1", "C2", "C3", "C4", "C5"):
+        meta = m.get("classes", {}).get(cid)
+        if not meta:
+            continue
+        col = _CLASS_COLORS.get(cid, "white")
+        print(c(f"    {cid:<3} {str(meta.get('name', '')):<48} {meta.get('count', 0)}", col))
+    print(c(f"  {_('manifest_profiles', lang)}:", "cyan"))
+    for pid, prof in m.get("profiles", {}).items():
+        parts = "/".join(prof.get("classes", []))
+        extra = ""
+        partial = prof.get("partial")
+        if partial:
+            extra = f"  +{partial.get('count', 0)} {partial.get('class', '')}"
+        marker = ">>" if pid == profile else "  "
+        print(f"    {marker} {pid:<9} {prof.get('count', 0):<4}[{parts}{extra}]")
+    print()
+
+
+def manifest_check(m: dict[str, Any], profile: str, lang: str) -> None:
+    """Manifest + profile status shown by --check."""
+    members = profile_members(m, profile)
+    if members is None:
+        print(c(f"  [{_('error', lang)}] {_('unknown_profile', lang).format(profile=profile)}", "red"))
+        return
+    print()
+    print(c(f"  {_('manifest_title', lang)}", "cyan"))
+    print(c("=" * 55, "cyan"))
+    known, unknown = installed_skills(m)
+    in_profile = sum(1 for name, _ in known if name in members)
+    cov_status = _("check_pass", lang) if in_profile == len(members) else _("check_warn", lang)
+    _print_check(
+        _("profile", lang),
+        cov_status,
+        detail=_("coverage", lang).format(actual=in_profile, expected=len(members)),
+        lang=lang,
+    )
+    print(c(f"  {_('installed_by_class', lang)}:", "cyan"))
+    if known:
+        by_class: dict[str, int] = {}
+        for _name, cid in known:
+            by_class[cid] = by_class.get(cid, 0) + 1
+        for cid in ("C1", "C2", "C3", "C4", "C5"):
+            if cid in by_class:
+                meta = m.get("classes", {}).get(cid, {})
+                print(c(f"    {cid:<3} {str(meta.get('name', '')):<46} {by_class[cid]}", _CLASS_COLORS.get(cid, "white")))
+    else:
+        print(f"    {_('post_verify_empty', lang).format(path=str(SKILLS_DIR))}")
+    if unknown:
+        head = ", ".join(sorted(unknown)[:8])
+        tail = " ..." if len(unknown) > 8 else ""
+        print(c(f"  [{_('warn', lang)}] {_('unknown_kept', lang).format(count=len(unknown))}: {head}{tail}", "yellow"))
+    print()
+
+
+def reconcile(m: dict[str, Any], profile: str, lang: str, dry_run: bool = False) -> tuple[int, int, int]:
+    """Enforce a profile on SKILLS_DIR. Returns (moved, kept, skipped)."""
+    members = profile_members(m, profile)
+    if members is None:
+        print(c(f"  [{_('error', lang)}] {_('unknown_profile', lang).format(profile=profile)}", "red"))
+        return 0, 0, 0
+    cls_of = manifest_skills(m)
+    present: list[str] = []
+    if SKILLS_DIR.is_dir():
+        for entry in sorted(SKILLS_DIR.iterdir()):
+            if entry.is_dir() and not entry.name.startswith(".") and (entry / "SKILL.md").is_file():
+                present.append(entry.name)
+    to_move = [n for n in present if n not in members and n in cls_of]
+    kept = len([n for n in present if n in members or n not in cls_of])
+    print()
+    print(c(f"  {_('reconcile_title', lang)}", "cyan"))
+    print(c("=" * 55, "cyan"))
+    if dry_run:
+        print(c(f"  [{_('warn', lang)}] {_('reconcile_dry_run', lang).format(count=len(to_move))}", "yellow"))
+        for name in to_move:
+            cid = cls_of.get(name, "")
+            print(f"    {c(name, _CLASS_COLORS.get(cid, 'white'))}  [{cid}]")
+        if not to_move:
+            print(c(f"  [{_('ok', lang)}] {_('reconcile_none', lang)}", "green"))
+        print()
+        return 0, kept, 0
+    skipped = 0
+    moved: list[str] = []
+    if to_move:
+        qdir = SKILLS_DIR.parent / f"_quarantine_{profile}_{datetime.datetime.now():%Y-%m-%d}"
+        qdir.mkdir(parents=True, exist_ok=True)
+        for name in to_move:
+            dst = qdir / name
+            if dst.exists():
+                skipped += 1
+                continue
+            try:
+                shutil.move(str(SKILLS_DIR / name), str(dst))
+                moved.append(name)
+            except OSError as e:
+                print(c(f"  [{_('error', lang)}] {name}: {e}", "red"))
+        if moved:
+            try:
+                with (qdir / "_moved-list.txt").open("a", encoding="utf-8") as fh:
+                    fh.write(f"# {datetime.datetime.now():%Y-%m-%d %H:%M:%S} profile={profile} skills={len(moved)}\n")
+                    for name in moved:
+                        fh.write(f"{name}\n")
+                print(c(f"  [{_('ok', lang)}] {_('reconcile_moved_list', lang).format(path=str(qdir / '_moved-list.txt'))}", "green"))
+            except OSError:
+                pass
+        print(c(f"  [{_('warn', lang)}] {_('reconcile_moved', lang).format(count=len(moved))}", "yellow"))
+        print(c(f"  {_('reconcile_quarantine', lang).format(path=str(qdir))}", "yellow"))
+    else:
+        print(c(f"  [{_('ok', lang)}] {_('reconcile_none', lang)}", "green"))
+    print(c(f"  [{_('ok', lang)}] {_('reconcile_kept', lang).format(count=kept)}", "green"))
+    if skipped:
+        print(c(f"  [{_('warn', lang)}] {_('reconcile_skipped', lang).format(count=skipped)}", "yellow"))
+    print()
+    return len(moved), kept, skipped
+
+
 # ─────────────────────────────── ENTRY ───────────────────────────────
 
 def _show_general_help(lang: str) -> None:
@@ -1633,6 +1859,7 @@ def _show_general_help(lang: str) -> None:
     print(f"    --lang tr   {_('lang', lang)}")
     print(f"    --dry-run   {_('dry_run', lang)}")
     print(f"    --prefix PATH {_('prefix', lang)}")
+    print(f"    --profile P   {_('profile_opt', lang)}")
     print(f"    --uninstall {_('uninstall', lang)}")
     print(f"    --check     {_('check', lang)}")
     print(f"    --list      {_('list', lang)}")
@@ -1666,6 +1893,7 @@ def _parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--lang", choices=["en", "tr"], default=None)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--prefix", type=str, default=None)
+    parser.add_argument("--profile", choices=["temel", "dengeli", "tam"], default="tam")
     parser.add_argument("--uninstall", action="store_true")
     parser.add_argument("--check", action="store_true")
     parser.add_argument("--list", action="store_true")
@@ -1710,10 +1938,16 @@ def main() -> None:
             desc = cat.get("description", "")
             print(f"  {cat['id']:<6} {cat['name']:<20} {desc}")
         print()
+        manifest = load_manifest(lang)
+        if manifest:
+            print_manifest_summary(manifest, args.profile, lang)
     elif getattr(args, "show_config", False):
         print(json.dumps(REPOS, indent=2, ensure_ascii=False))
     elif args.check:
         pre_flight_check(lang)
+        manifest = load_manifest(lang)
+        if manifest:
+            manifest_check(manifest, args.profile, lang)
     elif args.version:
         print(_("version_str", lang))
     elif args.uninstall:
@@ -1756,6 +1990,10 @@ def main() -> None:
         if args.dry_run:
             for target in targets:
                 _dry_run_list(target, lang)
+            if args.profile != "tam":
+                manifest = load_manifest(lang)
+                if manifest:
+                    reconcile(manifest, args.profile, lang, dry_run=True)
             return
 
         setup_logging(lang)
@@ -1778,6 +2016,11 @@ def main() -> None:
             total_ok += ok
             total_fail += fail
             total_fixes += fixes
+
+        if args.profile != "tam":
+            manifest = load_manifest(lang)
+            if manifest:
+                reconcile(manifest, args.profile, lang)
 
         final_report(total_ok, total_fail, total_fixes, lang)
 
