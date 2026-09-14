@@ -27,14 +27,14 @@ jobs:
         id: version
         run: |
           TAG="${{ github.event.inputs.version || github.ref_name }}"
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "version=${TAG#v}" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
 
       - name: Build artifact name
         id: artifact
         run: |
           ARCHIVE="skills.py"
-          echo "archive=$ARCHIVE" >> $GITHUB_OUTPUT
+          echo "archive=$ARCHIVE" >> "$GITHUB_OUTPUT"
 
       - name: Syntax check
         run: python -m py_compile skills.py
