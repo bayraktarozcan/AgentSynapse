@@ -8,7 +8,7 @@
 
 Welcome to the **AgentSynapse** wiki.
 
-This project aggregates **570+ SKILL.md files** (Recommended profile) from **48 top-tier repositories** across **10 functional categories** (K1–K10). It provides a unified, cross-platform Python installer (`skills.py`) that clones all repos, extracts every SKILL.md, deduplicates, and organizes them into `~/.agents/skills/` — ready for discovery by Claude Code, OpenCode, Cursor, and any agent that reads the standard SKILL.md format.
+This project aggregates **560+ SKILL.md files** (Recommended profile) from **34 top-tier repositories** across **10 functional categories** (K1–K10). It provides a unified, cross-platform Python installer (`skills.py`) that clones all repos, extracts every SKILL.md, deduplicates, and organizes them into `~/.agents/skills/` — ready for discovery by Claude Code, OpenCode, Cursor, and any agent that reads the standard SKILL.md format.
 
 ### Quick Start
 
@@ -18,14 +18,14 @@ cd AgentSynapse
 python skills.py
 ```
 
-That's it. The recommended profile installs ~450 skills from 34 curated repos.
+That's it. The recommended profile installs ~566 skills from 34 curated repos.
 
 ### Profiles
 
 | Profile | Repos | Skills | Description |
 |---------|-------|--------|-------------|
-| `recommended` (default) | 34 | ~450 | Curated subset — highest quality |
-| `trusted` | 39 | ~600 | K1–K8, all trusted categories |
+| `recommended` (default) | 34 | ~566 | Curated subset — highest quality |
+| `trusted` | 39 | ~640 | K1–K8, all trusted categories |
 | `all` | 48 | ~995 | Everything including K9–K10 |
 
 ### Features
@@ -53,7 +53,7 @@ That's it. The recommended profile installs ~450 skills from 34 curated repos.
 
 **Agent Beceri Projesi** wiki'sine hoş geldiniz.
 
-Bu proje, **48 üst düzey depodan 450+ SKILL.md dosyasını** **10 işlevsel kategoride** (K1–K10) toplar. Tek bir platformlar arası Python yükleyici (`skills.py`) ile tüm repoları klonlar, her SKILL.md'yi çıkarır, tekilleştirir ve `~/.agents/skills/` altına düzenler — Claude Code, OpenCode, Cursor ve SKILL.md formatını okuyan her ajan tarafından keşfedilmeye hazır.
+Bu proje, **34 üst düzey depodan 560+ SKILL.md dosyasını** **10 işlevsel kategoride** (K1–K10) toplar. Tek bir platformlar arası Python yükleyici (`skills.py`) ile tüm repoları klonlar, her SKILL.md'yi çıkarır, tekilleştirir ve `~/.agents/skills/` altına düzenler — Claude Code, OpenCode, Cursor ve SKILL.md formatını okuyan her ajan tarafından keşfedilmeye hazır.
 
 ### Hızlı Başlangıç
 
@@ -63,14 +63,14 @@ cd AgentSynapse
 python skills.py
 ```
 
-Bu kadar. Önerilen profil, 34 küratörlü depodan ~450 beceri yükler.
+Bu kadar. Önerilen profil, 34 küratörlü depodan ~566 beceri yükler.
 
 ### Profiller
 
 | Profil | Depo | Beceri | Açıklama |
 |--------|------|--------|----------|
-| `onerilen` (varsayılan) | 34 | ~450 | Küratörlü alt küme — en yüksek kalite |
-| `guvenli` | 39 | ~600 | K1–K8, tüm güvenli kategoriler |
+| `onerilen` (varsayılan) | 34 | ~566 | Küratörlü alt küme — en yüksek kalite |
+| `guvenli` | 39 | ~640 | K1–K8, tüm güvenli kategoriler |
 | `tumu` | 48 | ~995 | K9–K10 dahil her şey |
 
 ### Özellikler

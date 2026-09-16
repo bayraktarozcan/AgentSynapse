@@ -215,7 +215,7 @@ cd AgentSynapse
 
 # Run regression
 python skills.py recommended           # 34 repos, ~566 skills
-python skills.py trusted               # 39 repos, ~600 skills
+python skills.py trusted               # 39 repos, ~640 skills
 python skills.py all                   # 48 repos, ~995 skills
 ```
 
@@ -325,7 +325,7 @@ Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve 
 | Komut | Kapsam | Depo | Beceri (yaklaşık) |
 |-------|--------|------|--------------------|
 | `python skills.py` | Önerilen | 34 | ~566 |
-| `python skills.py trusted` | Güvenli (K1-K8) | 39 | ~600 |
+| `python skills.py trusted` | Güvenli (K1-K8) | 39 | ~640 |
 | `python skills.py all` | Tümü (K1-K10) | 48 | ~995 |
 
 ### Uzmanlaşma
@@ -457,7 +457,7 @@ cd AgentSynapse
 
 # Regresyon testi
 python skills.py recommended           # 34 depo, ~566 beceri
-python skills.py trusted               # 39 depo, ~600 beceri
+python skills.py trusted               # 39 depo, ~640 beceri
 python skills.py all                   # 48 depo, ~995 beceri
 ```
 
