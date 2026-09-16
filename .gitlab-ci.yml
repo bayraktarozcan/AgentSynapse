@@ -1,0 +1,19 @@
+﻿# GitLab Pages — mirrors GitHub Pages (docs/ on main).
+# Inert on GitHub (no runner reads this file there).
+# alpine:latest is intentional: trivial copy job, always fresh, zero maintenance
+# (repo has no updater for GitLab CI image tags, unlike GitHub Actions).
+
+stages:
+  - deploy
+
+pages:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - mkdir -p public
+    - cp -r docs/. public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
