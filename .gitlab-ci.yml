@@ -4,6 +4,14 @@
 # for CI determinism; digests re-verified against Docker Hub this session):
 #   alpine:3.21@sha256:48b0309ca019d89d40f670aa1bc06e426dc0931948452e8491e3d65087abc07d
 
+# --- CI intentionally INERT on GitLab ---
+# Owner pushes directly (no MR workflow); GitLab runner/2FA not provisioned.
+# Keep this file as the parity mirror of GitHub CI, but never create a
+# pipeline. Re-enable by removing this block and registering a runner.
+workflow:
+  rules:
+    - when: never
+
 stages:
   - test
   - deploy
