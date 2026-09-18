@@ -1,0 +1,8 @@
+# CODEOWNERS
+#
+# AgentSynapse is a single-owner, personal repository. The repository owner
+# (@bayraktarozcan) is the sole maintainer and reviews all changes directly.
+#
+# Because every file is owned by the same person, a single wildcard rule is
+# intentional and sufficient here.
+* @bayraktarozcan
