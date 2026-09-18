@@ -1,6 +1,6 @@
 # AgentSynapse
 
-| <kbd>[ğŸ‡¬ğŸ‡§ **English**](#en)</kbd> | <kbd>[ğŸ‡¹ğŸ‡· **TÃ¼rkÃ§e**](#tr)</kbd> |
+| <kbd>[ÄŸÅ¸â€¡Â¬ÄŸÅ¸â€¡Â§ **English**](#en)</kbd> | <kbd>[ÄŸÅ¸â€¡Â¹ÄŸÅ¸â€¡Â· **TÃƒÂ¼rkÃƒÂ§e**](#tr)</kbd> |
 |---|---|
 
 ---
@@ -82,13 +82,13 @@ Skills land in `~/.agents/skills/<name>/SKILL.md` -- auto-discovered by Claude C
 
 ### Specialization
 
-`skill-specialization.json` maps every skill to a specialization class (C1â€“C5). The `--profile` flag scopes what stays installed:
+`skill-specialization.json` maps every skill to a specialization class (C1Ã¢â‚¬â€œC5). The `--profile` flag scopes what stays installed:
 
 | Profile | Classes | Skills |
 |---------|---------|--------|
 | `temel` | C1, C2 | 222 |
 | `dengeli` | C1, C2, C3, first 76 of C4 | 355 |
-| `tam` (default) | All C1â€“C5 | 566 |
+| `tam` (default) | All C1Ã¢â‚¬â€œC5 | 566 |
 
 After an install with `--profile temel` or `--profile dengeli`, out-of-profile skills are moved to `~/.agents/_quarantine_<profile>_<date>/` (a `_moved-list.txt` is written). Preview with `--dry-run`, inspect via `--list` / `--check`:
 
@@ -258,7 +258,7 @@ Built for the AI agent community.
 
 <a id="tr"></a>
 
-**566'dan fazla kÃ¼ratÃ¶rlÃ¼ AI ajan becerisi**, 34 Ã¼st dÃ¼zey depodan alÄ±nmÄ±ÅŸ, 10 iÅŸlevsel kategoriye ayrÄ±lmÄ±ÅŸ, tek komutla yÃ¼klenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan Ã§erÃ§evesi iÃ§in Ã¼retilmiÅŸtir.
+**566'dan fazla kÃƒÂ¼ratÃƒÂ¶rlÃƒÂ¼ AI ajan becerisi**, 34 ÃƒÂ¼st dÃƒÂ¼zey depodan alÃ„Â±nmÃ„Â±Ã…Å¸, 10 iÃ…Å¸levsel kategoriye ayrÃ„Â±lmÃ„Â±Ã…Å¸, tek komutla yÃƒÂ¼klenebilir. Claude Code, OpenCode ve SKILL.md okuyan her ajan ÃƒÂ§erÃƒÂ§evesi iÃƒÂ§in ÃƒÂ¼retilmiÃ…Å¸tir.
 
 [![Skills](https://img.shields.io/badge/skills-566%2B-blue?style=flat-square&color=58a6ff)](https://github.com/bayraktarozcan/AgentSynapse)
 [![Repos](https://img.shields.io/badge/repos-34-success?style=flat-square&color=3fb950)](https://github.com/bayraktarozcan/AgentSynapse)
@@ -267,188 +267,188 @@ Built for the AI agent community.
 
 ---
 
-## HÄ±zlÄ± BaÅŸlangÄ±Ã§
+## HÃ„Â±zlÃ„Â± BaÃ…Å¸langÃ„Â±ÃƒÂ§
 
 ```bash
 git clone https://github.com/bayraktarozcan/AgentSynapse.git
 cd AgentSynapse
 
-# Ã–nerilen -- 566+ kÃ¼ratÃ¶rlÃ¼ beceri (varsayÄ±lan)
+# Ãƒâ€“nerilen -- 566+ kÃƒÂ¼ratÃƒÂ¶rlÃƒÂ¼ beceri (varsayÃ„Â±lan)
 python skills.py
 
-# Veya Python 3, python3 olarak yÃ¼klendiyse:
+# Veya Python 3, python3 olarak yÃƒÂ¼klendiyse:
 python3 skills.py
 
-# Tam gÃ¼venli suite (K1-K8)
+# Tam gÃƒÂ¼venli suite (K1-K8)
 python skills.py trusted
 
-# Her ÅŸey (opsiyonel kategoriler dahil)
+# Her Ã…Å¸ey (opsiyonel kategoriler dahil)
 python skills.py all
 
 # Sadece AI becerileri
 python skills.py K2
 
-# Grafik arayÃ¼zÃ¼ baÅŸlat
+# Grafik arayÃƒÂ¼zÃƒÂ¼ baÃ…Å¸lat
 python skills.py --gui
 ```
 
-Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve OpenCode tarafÄ±ndan otomatik keÅŸfedilir.
+Beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kurulur -- Claude Code ve OpenCode tarafÃ„Â±ndan otomatik keÃ…Å¸fedilir.
 
 ---
 
 ## Gereksinimler
 
-- **Python 3.8+** (sadece standart kÃ¼tÃ¼phane -- pip gerekmez)
-- **Git** (depolarÄ± klonlamak iÃ§in)
-- **tkinter** (opsiyonel, `--gui` modu iÃ§in)
+- **Python 3.8+** (sadece standart kÃƒÂ¼tÃƒÂ¼phane -- pip gerekmez)
+- **Git** (depolarÃ„Â± klonlamak iÃƒÂ§in)
+- **tkinter** (opsiyonel, `--gui` modu iÃƒÂ§in)
 
 ---
 
-## Ã–zellikler
+## Ãƒâ€“zellikler
 
-- **Tek komutla kurulum** -- 34 depoyu klonla, becerileri Ã§Ä±kar, tekrarlarÄ± temizle, bitti.
-- **10 iÅŸlevsel kategori** -- Ã‡ekirdek, AI & LLM, Bulut & Backend, Ã–n yÃ¼z & UI, Mobil, GÃ¼venlik, Test, Ä°Ã§erik, Topluluk, Risk.
-- **Ä°ki dilli** -- Ä°ngilizce ve TÃ¼rkÃ§e. Otomatik algÄ±lama veya `--lang tr`.
-- **Ã‡apraz platform** -- Windows, macOS, Linux. Tek Python dosyasÄ±, baÄŸÄ±mlÄ±lÄ±k yok.
-- **VarsayÄ±lan olarak gÃ¼venilir** -- Ã–nerilen profili yalnÄ±zca doÄŸrulanmÄ±ÅŸ depolar iÃ§erir; Topluluk ve Risk opsiyoneldir.
-- **Otomatik tekrar temizleme** -- iki depo aynÄ± beceriye sahipse, Ã¼st kategorideki (yÃ¼ksek K numarasÄ±) kazanÄ±r.
-- **Ajan-yerel formatÄ±** -- tÃ¼m beceriler standart SKILL.md formatÄ±ndadÄ±r. DÃ¶nÃ¼ÅŸÃ¼m gerekmez.
-- **Tam denetim izi** -- zaman damgalÄ± gÃ¼nlÃ¼kler, Ã§alÄ±ÅŸtÄ±rma baÅŸÄ±na klasÃ¶r aÄŸacÄ±.
-- **Grafik arayÃ¼z** -- `--gui` ile tkinter yÃ¼kleyici, profil hÄ±zlÄ± seÃ§imi.
+- **Tek komutla kurulum** -- 34 depoyu klonla, becerileri ÃƒÂ§Ã„Â±kar, tekrarlarÃ„Â± temizle, bitti.
+- **10 iÃ…Å¸levsel kategori** -- Ãƒâ€¡ekirdek, AI & LLM, Bulut & Backend, Ãƒâ€“n yÃƒÂ¼z & UI, Mobil, GÃƒÂ¼venlik, Test, Ã„Â°ÃƒÂ§erik, Topluluk, Risk.
+- **Ã„Â°ki dilli** -- Ã„Â°ngilizce ve TÃƒÂ¼rkÃƒÂ§e. Otomatik algÃ„Â±lama veya `--lang tr`.
+- **Ãƒâ€¡apraz platform** -- Windows, macOS, Linux. Tek Python dosyasÃ„Â±, baÃ„Å¸Ã„Â±mlÃ„Â±lÃ„Â±k yok.
+- **VarsayÃ„Â±lan olarak gÃƒÂ¼venilir** -- Ãƒâ€“nerilen profili yalnÃ„Â±zca doÃ„Å¸rulanmÃ„Â±Ã…Å¸ depolar iÃƒÂ§erir; Topluluk ve Risk opsiyoneldir.
+- **Otomatik tekrar temizleme** -- iki depo aynÃ„Â± beceriye sahipse, ÃƒÂ¼st kategorideki (yÃƒÂ¼ksek K numarasÃ„Â±) kazanÃ„Â±r.
+- **Ajan-yerel formatÃ„Â±** -- tÃƒÂ¼m beceriler standart SKILL.md formatÃ„Â±ndadÃ„Â±r. DÃƒÂ¶nÃƒÂ¼Ã…Å¸ÃƒÂ¼m gerekmez.
+- **Tam denetim izi** -- zaman damgalÃ„Â± gÃƒÂ¼nlÃƒÂ¼kler, ÃƒÂ§alÃ„Â±Ã…Å¸tÃ„Â±rma baÃ…Å¸Ã„Â±na klasÃƒÂ¶r aÃ„Å¸acÃ„Â±.
+- **Grafik arayÃƒÂ¼z** -- `--gui` ile tkinter yÃƒÂ¼kleyici, profil hÃ„Â±zlÃ„Â± seÃƒÂ§imi.
 
 ---
 
-## KullanÄ±m
+## KullanÃ„Â±m
 
 ### Profiller
 
-| Komut | Kapsam | Depo | Beceri (yaklaÅŸÄ±k) |
+| Komut | Kapsam | Depo | Beceri (yaklaÃ…Å¸Ã„Â±k) |
 |-------|--------|------|--------------------|
-| `python skills.py` | Ã–nerilen | 34 | ~566 |
-| `python skills.py trusted` | GÃ¼venli (K1-K8) | 39 | ~640 |
-| `python skills.py all` | TÃ¼mÃ¼ (K1-K10) | 48 | ~995 |
+| `python skills.py` | Ãƒâ€“nerilen | 34 | ~566 |
+| `python skills.py trusted` | GÃƒÂ¼venli (K1-K8) | 39 | ~640 |
+| `python skills.py all` | TÃƒÂ¼mÃƒÂ¼ (K1-K10) | 48 | ~995 |
 
-### UzmanlaÅŸma
+### UzmanlaÃ…Å¸ma
 
-`skill-specialization.json`, her beceriyi bir uzmanlaÅŸma sÄ±nÄ±fÄ±na (C1â€“C5) eÅŸler. `--profile` bayraÄŸÄ± neyin kurulu kalacaÄŸÄ±nÄ± kapsamlar:
+`skill-specialization.json`, her beceriyi bir uzmanlaÃ…Å¸ma sÃ„Â±nÃ„Â±fÃ„Â±na (C1Ã¢â‚¬â€œC5) eÃ…Å¸ler. `--profile` bayraÃ„Å¸Ã„Â± neyin kurulu kalacaÃ„Å¸Ã„Â±nÃ„Â± kapsamlar:
 
-| Profil | SÄ±nÄ±flar | Beceri |
+| Profil | SÃ„Â±nÃ„Â±flar | Beceri |
 |--------|----------|--------|
 | `temel` | C1, C2 | 222 |
-| `dengeli` | C1, C2, C3, C4'Ã¼n ilk 76'sÄ± | 355 |
-| `tam` (varsayÄ±lan) | TÃ¼m C1â€“C5 | 566 |
+| `dengeli` | C1, C2, C3, C4'ÃƒÂ¼n ilk 76'sÃ„Â± | 355 |
+| `tam` (varsayÃ„Â±lan) | TÃƒÂ¼m C1Ã¢â‚¬â€œC5 | 566 |
 
-`--profile temel` veya `--profile dengeli` ile yapÄ±lan bir kurulumun ardÄ±ndan profil dÄ±ÅŸÄ± beceriler `~/.agents/_quarantine_<profil>_<tarih>/` klasÃ¶rÃ¼ne taÅŸÄ±nÄ±r (`_moved-list.txt` yazÄ±lÄ±r). `--dry-run` ile Ã¶nizleyin, `--list` / `--check` ile inceleyin:
+`--profile temel` veya `--profile dengeli` ile yapÃ„Â±lan bir kurulumun ardÃ„Â±ndan profil dÃ„Â±Ã…Å¸Ã„Â± beceriler `~/.agents/_quarantine_<profil>_<tarih>/` klasÃƒÂ¶rÃƒÂ¼ne taÃ…Å¸Ã„Â±nÃ„Â±r (`_moved-list.txt` yazÃ„Â±lÃ„Â±r). `--dry-run` ile ÃƒÂ¶nizleyin, `--list` / `--check` ile inceleyin:
 
 ```bash
-python skills.py --dry-run --profile temel    # neyin taÅŸÄ±nacaÄŸÄ±nÄ± Ã¶nizle
+python skills.py --dry-run --profile temel    # neyin taÃ…Å¸Ã„Â±nacaÃ„Å¸Ã„Â±nÃ„Â± ÃƒÂ¶nizle
 python skills.py --check --profile dengeli    # kapsam raporu
-python skills.py --list --profile temel       # profil haritasÄ±
+python skills.py --list --profile temel       # profil haritasÃ„Â±
 ```
 
 ### Kategoriler
 
 ```bash
-python skills.py K1          # Ã‡ekirdek -- diller, araÃ§lar
-python skills.py K2          # AI & LLM -- ajanlar, RAG, yÃ¶nlendirme
+python skills.py K1          # Ãƒâ€¡ekirdek -- diller, araÃƒÂ§lar
+python skills.py K2          # AI & LLM -- ajanlar, RAG, yÃƒÂ¶nlendirme
 python skills.py K3          # Bulut & Backend
-python skills.py K4          # Ã–n yÃ¼z & UI
+python skills.py K4          # Ãƒâ€“n yÃƒÂ¼z & UI
 python skills.py K5          # Mobil
-python skills.py K6          # GÃ¼venlik
+python skills.py K6          # GÃƒÂ¼venlik
 python skills.py K7          # Test
-python skills.py K8          # Ä°Ã§erik
+python skills.py K8          # Ã„Â°ÃƒÂ§erik
 python skills.py K9          # Topluluk (opsiyonel)
 python skills.py K10         # Risk (opsiyonel)
 ```
 
-### SeÃ§enekler
+### SeÃƒÂ§enekler
 
-| Bayrak | AÃ§Ä±klama |
+| Bayrak | AÃƒÂ§Ã„Â±klama |
 |--------|----------|
-| `--gui` | Grafik arayÃ¼zÃ¼ baÅŸlat |
-| `--lang tr` | TÃ¼rkÃ§e'yi zorla |
-| `--lang en` | Ä°ngilizce'yi zorla |
-| `--dry-run` | RepolarÄ± kurmadan Ã¶nizle |
-| `--prefix PATH` | Ã–zel kurulum dizini |
-| `--profile P` | UzmanlaÅŸma profilini uygula (temel, dengeli, tam; varsayÄ±lan tam) |
-| `--uninstall` | TÃ¼m becerileri kaldÄ±r |
-| `--check` | Ã–n uÃ§uÅŸ ortam kontrolÃ¼ (Python, Git, aÄŸ, disk) |
+| `--gui` | Grafik arayÃƒÂ¼zÃƒÂ¼ baÃ…Å¸lat |
+| `--lang tr` | TÃƒÂ¼rkÃƒÂ§e'yi zorla |
+| `--lang en` | Ã„Â°ngilizce'yi zorla |
+| `--dry-run` | RepolarÃ„Â± kurmadan ÃƒÂ¶nizle |
+| `--prefix PATH` | Ãƒâ€“zel kurulum dizini |
+| `--profile P` | UzmanlaÃ…Å¸ma profilini uygula (temel, dengeli, tam; varsayÃ„Â±lan tam) |
+| `--uninstall` | TÃƒÂ¼m becerileri kaldÃ„Â±r |
+| `--check` | Ãƒâ€“n uÃƒÂ§uÃ…Å¸ ortam kontrolÃƒÂ¼ (Python, Git, aÃ„Å¸, disk) |
 | `--list` | Kategorileri listele |
-| `--show-config` | Repo kaydÄ±nÄ± JSON olarak gÃ¶ster |
-| `--version` | SÃ¼rÃ¼mÃ¼ gÃ¶ster |
-| `--readme` | Tam README'yi gÃ¶ster |
-| `--changelog` | DeÄŸiÅŸiklik gÃ¼nlÃ¼ÄŸÃ¼nÃ¼ gÃ¶ster |
-| `--conduct` | DavranÄ±ÅŸ kurallarÄ±nÄ± gÃ¶ster |
-| `--security` | GÃ¼venlik politikasÄ±nÄ± gÃ¶ster |
-| `--support` | Destek bilgilerini gÃ¶ster |
-| `--license` | LisansÄ± gÃ¶ster |
-| `--help` | YardÄ±m mesajÄ±nÄ± gÃ¶ster |
+| `--show-config` | Repo kaydÃ„Â±nÃ„Â± JSON olarak gÃƒÂ¶ster |
+| `--version` | SÃƒÂ¼rÃƒÂ¼mÃƒÂ¼ gÃƒÂ¶ster |
+| `--readme` | Tam README'yi gÃƒÂ¶ster |
+| `--changelog` | DeÃ„Å¸iÃ…Å¸iklik gÃƒÂ¼nlÃƒÂ¼Ã„Å¸ÃƒÂ¼nÃƒÂ¼ gÃƒÂ¶ster |
+| `--conduct` | DavranÃ„Â±Ã…Å¸ kurallarÃ„Â±nÃ„Â± gÃƒÂ¶ster |
+| `--security` | GÃƒÂ¼venlik politikasÃ„Â±nÃ„Â± gÃƒÂ¶ster |
+| `--support` | Destek bilgilerini gÃƒÂ¶ster |
+| `--license` | LisansÃ„Â± gÃƒÂ¶ster |
+| `--help` | YardÃ„Â±m mesajÃ„Â±nÃ„Â± gÃƒÂ¶ster |
 
-### TÃ¼rkÃ§e CLI
+### TÃƒÂ¼rkÃƒÂ§e CLI
 
 ```bash
-python skills.py --lang tr onerilen      # Ã–nerilen profili yÃ¼kle
-python skills.py --lang tr guvenli       # GÃ¼venli kategorileri yÃ¼kle
-python skills.py --lang tr tumu          # TÃ¼mÃ¼nÃ¼ yÃ¼kle
+python skills.py --lang tr onerilen      # Ãƒâ€“nerilen profili yÃƒÂ¼kle
+python skills.py --lang tr guvenli       # GÃƒÂ¼venli kategorileri yÃƒÂ¼kle
+python skills.py --lang tr tumu          # TÃƒÂ¼mÃƒÂ¼nÃƒÂ¼ yÃƒÂ¼kle
 python skills.py --lang tr K2            # Sadece AI kategorisi
 python skills.py --lang tr --list        # Kategorileri listele
-python skills.py --lang tr --gui         # Grafik arayÃ¼zÃ¼ baÅŸlat
+python skills.py --lang tr --gui         # Grafik arayÃƒÂ¼zÃƒÂ¼ baÃ…Å¸lat
 ```
 
 ---
 
-## Kategori ReferansÄ±
+## Kategori ReferansÃ„Â±
 
 | Kod | Kategori | Depo | Durum |
 |-----|----------|------|-------|
-| **K1** | Ã‡ekirdek (diller, araÃ§lar, kod kalitesi) | 5 | VarsayÄ±lan |
-| **K2** | AI & LLM (ajanlar, RAG, yÃ¶nlendirme, tarayÄ±cÄ± ajanlarÄ±) | 9 | VarsayÄ±lan |
-| **K3** | Bulut & Backend (AWS, Vercel, Stripe, Neon, Supabase) | 11 | VarsayÄ±lan |
-| **K4** | Ã–n yÃ¼z & UI (React, Next.js, Expo, shadcn, WordPress) | 8 | VarsayÄ±lan |
-| **K5** | Mobil (iOS, Android, React Native, Expo) | 1 | VarsayÄ±lan |
-| **K6** | GÃ¼venlik (inceleme, tarama, saÄŸlamlaÅŸtÄ±rma) | 2 | VarsayÄ±lan |
-| **K7** | Test (E2E, birim, gÃ¶rsel regresyon) | 1 | VarsayÄ±lan |
-| **K8** | Ä°Ã§erik (yazma, dokÃ¼mantasyon, dÃ¼zenleme, yayÄ±ncÄ±lÄ±k) | 2 | VarsayÄ±lan |
-| **K9** | Topluluk (Ã¼Ã§Ã¼ncÃ¼ taraf, dÃ¼ÅŸÃ¼k yÄ±ldÄ±z sayÄ±sÄ±) | 5 | Opsiyonel |
-| **K10** | Risk (deneysel, bakÄ±mÄ± yapÄ±lmayan) | 4 | Opsiyonel |
+| **K1** | Ãƒâ€¡ekirdek (diller, araÃƒÂ§lar, kod kalitesi) | 5 | VarsayÃ„Â±lan |
+| **K2** | AI & LLM (ajanlar, RAG, yÃƒÂ¶nlendirme, tarayÃ„Â±cÃ„Â± ajanlarÃ„Â±) | 9 | VarsayÃ„Â±lan |
+| **K3** | Bulut & Backend (AWS, Vercel, Stripe, Neon, Supabase) | 11 | VarsayÃ„Â±lan |
+| **K4** | Ãƒâ€“n yÃƒÂ¼z & UI (React, Next.js, Expo, shadcn, WordPress) | 8 | VarsayÃ„Â±lan |
+| **K5** | Mobil (iOS, Android, React Native, Expo) | 1 | VarsayÃ„Â±lan |
+| **K6** | GÃƒÂ¼venlik (inceleme, tarama, saÃ„Å¸lamlaÃ…Å¸tÃ„Â±rma) | 2 | VarsayÃ„Â±lan |
+| **K7** | Test (E2E, birim, gÃƒÂ¶rsel regresyon) | 1 | VarsayÃ„Â±lan |
+| **K8** | Ã„Â°ÃƒÂ§erik (yazma, dokÃƒÂ¼mantasyon, dÃƒÂ¼zenleme, yayÃ„Â±ncÃ„Â±lÃ„Â±k) | 2 | VarsayÃ„Â±lan |
+| **K9** | Topluluk (ÃƒÂ¼ÃƒÂ§ÃƒÂ¼ncÃƒÂ¼ taraf, dÃƒÂ¼Ã…Å¸ÃƒÂ¼k yÃ„Â±ldÃ„Â±z sayÃ„Â±sÃ„Â±) | 5 | Opsiyonel |
+| **K10** | Risk (deneysel, bakÃ„Â±mÃ„Â± yapÃ„Â±lmayan) | 4 | Opsiyonel |
 
 ---
 
-## NasÄ±l Ã‡alÄ±ÅŸÄ±r
+## NasÃ„Â±l Ãƒâ€¡alÃ„Â±Ã…Å¸Ã„Â±r
 
 ```
-git clone --depth 1 --single-branch <repo> -> SKILL.md Ã¶n yÃ¼zÃ¼nÃ¼ ayrÄ±ÅŸtÄ±r -> tekrarlarÄ± temizle -> ~/.agents/skills/<name>/ konumuna kopyala
+git clone --depth 1 --single-branch <repo> -> SKILL.md ÃƒÂ¶n yÃƒÂ¼zÃƒÂ¼nÃƒÂ¼ ayrÃ„Â±Ã…Å¸tÃ„Â±r -> tekrarlarÃ„Â± temizle -> ~/.agents/skills/<name>/ konumuna kopyala
 ```
 
-1. **Klonla** -- her depo geÃ§ici dizine --depth 1 --single-branch ile klonlanÄ±r (yalnÄ±zca tek dal).
-2. **AyrÄ±ÅŸtÄ±r** -- her SKILL.md dosyasÄ±nÄ±n `name:` alanÄ± ve alt dizin yolu okunur.
-3. **TekrarlarÄ± temizle** -- iki depo aynÄ± beceri adÄ±na sahipse, Ã¼st kategorideki (yÃ¼ksek K) kazanÄ±r.
-4. **Kur** -- beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kopyalanÄ±r.
+1. **Klonla** -- her depo geÃƒÂ§ici dizine --depth 1 --single-branch ile klonlanÃ„Â±r (yalnÃ„Â±zca tek dal).
+2. **AyrÃ„Â±Ã…Å¸tÃ„Â±r** -- her SKILL.md dosyasÃ„Â±nÃ„Â±n `name:` alanÃ„Â± ve alt dizin yolu okunur.
+3. **TekrarlarÃ„Â± temizle** -- iki depo aynÃ„Â± beceri adÃ„Â±na sahipse, ÃƒÂ¼st kategorideki (yÃƒÂ¼ksek K) kazanÃ„Â±r.
+4. **Kur** -- beceriler `~/.agents/skills/<name>/SKILL.md` konumuna kopyalanÃ„Â±r.
 
 ---
 
-## Proje YapÄ±sÄ±
+## Proje YapÃ„Â±sÃ„Â±
 
 ```
 AgentSynapse/
-+-- skills.py            # TÃ¼m proje -- CLI + GUI, iki dilli, kendi kendine yeter
-+-- README.md            # Bu dosya (Ã§ift dilli EN/TR)
-+-- CHANGELOG.md         # Ã‡ift dilli deÄŸiÅŸiklik gÃ¼nlÃ¼ÄŸÃ¼
-+-- CODE_OF_CONDUCT.md   # Ã‡ift dilli davranÄ±ÅŸ kurallarÄ±
-+-- SECURITY.md          # Ã‡ift dilli gÃ¼venlik politikasÄ±
-+-- SUPPORT.md           # Ã‡ift dilli destek bilgileri
-+-- CONTRIBUTING.md      # Ã‡ift dilli katkÄ± rehberi
-+-- LICENSE              # MIT LisansÄ±
-+-- Legacy/              # Ã–nceki proje sÃ¼rÃ¼mlerinden arÅŸiv dosyalarÄ± (skills.ps1, karar.md)
-+-- Logs/                # Zaman damgalÄ± kurulum gÃ¼nlÃ¼kleri (otomatik)
-+-- skills-tree_*.txt    # Ã‡alÄ±ÅŸtÄ±rma baÅŸÄ±na zaman damgalÄ± klasÃ¶r aÄŸacÄ± (otomatik)
-+-- skill-specialization.json # UzmanlaÅŸma manifesti (566 beceri, C1-C5)
-+-- .github/             # Issue ÅŸablonlarÄ±, finansman, dependabot
++-- skills.py            # TÃƒÂ¼m proje -- CLI + GUI, iki dilli, kendi kendine yeter
++-- README.md            # Bu dosya (ÃƒÂ§ift dilli EN/TR)
++-- CHANGELOG.md         # Ãƒâ€¡ift dilli deÃ„Å¸iÃ…Å¸iklik gÃƒÂ¼nlÃƒÂ¼Ã„Å¸ÃƒÂ¼
++-- CODE_OF_CONDUCT.md   # Ãƒâ€¡ift dilli davranÃ„Â±Ã…Å¸ kurallarÃ„Â±
++-- SECURITY.md          # Ãƒâ€¡ift dilli gÃƒÂ¼venlik politikasÃ„Â±
++-- SUPPORT.md           # Ãƒâ€¡ift dilli destek bilgileri
++-- CONTRIBUTING.md      # Ãƒâ€¡ift dilli katkÃ„Â± rehberi
++-- LICENSE              # MIT LisansÃ„Â±
++-- Legacy/              # Ãƒâ€“nceki proje sÃƒÂ¼rÃƒÂ¼mlerinden arÃ…Å¸iv dosyalarÃ„Â± (skills.ps1, karar.md)
++-- Logs/                # Zaman damgalÃ„Â± kurulum gÃƒÂ¼nlÃƒÂ¼kleri (otomatik)
++-- skills-tree_*.txt    # Ãƒâ€¡alÃ„Â±Ã…Å¸tÃ„Â±rma baÃ…Å¸Ã„Â±na zaman damgalÃ„Â± klasÃƒÂ¶r aÃ„Å¸acÃ„Â± (otomatik)
++-- skill-specialization.json # UzmanlaÃ…Å¸ma manifesti (566 beceri, C1-C5)
++-- .github/             # Issue Ã…Å¸ablonlarÃ„Â±, finansman, dependabot
 ```
 
 ---
 
-## GeliÅŸtirme
+## GeliÃ…Å¸tirme
 
 ```bash
 # Depoyu klonla
@@ -463,35 +463,35 @@ python skills.py all                   # 48 depo, ~995 beceri
 
 ### Depo Ekleme
 
-1. `skills.py` iÃ§indeki `REPOS` sÃ¶zlÃ¼ÄŸÃ¼nÃ¼ dÃ¼zenleyin -- uygun kategori altÄ±na depo giriÅŸi ekleyin.
-2. `python skills.py K<kategori>` ile kurulumu doÄŸrulayÄ±n.
+1. `skills.py` iÃƒÂ§indeki `REPOS` sÃƒÂ¶zlÃƒÂ¼Ã„Å¸ÃƒÂ¼nÃƒÂ¼ dÃƒÂ¼zenleyin -- uygun kategori altÃ„Â±na depo giriÃ…Å¸i ekleyin.
+2. `python skills.py K<kategori>` ile kurulumu doÃ„Å¸rulayÃ„Â±n.
 
 ### Dil Ekleme
 
-`skills.py` iÃ§indeki `S` sÃ¶zlÃ¼ÄŸÃ¼nÃ¼ dÃ¼zenleyin -- yeni bir dil anahtarÄ± ekleyin ve tÃ¼m dizeleri Ã§evirin.
+`skills.py` iÃƒÂ§indeki `S` sÃƒÂ¶zlÃƒÂ¼Ã„Å¸ÃƒÂ¼nÃƒÂ¼ dÃƒÂ¼zenleyin -- yeni bir dil anahtarÃ„Â± ekleyin ve tÃƒÂ¼m dizeleri ÃƒÂ§evirin.
 
 ---
 
-## Ajan UyumluluÄŸu
+## Ajan UyumluluÃ„Å¸u
 
 | Ajan | Genel Yol | Yerel Destek |
 |------|-----------|--------------|
 | **Claude Code** | `~/.agents/skills/` | Tam |
 | **OpenCode** | `~/.agents/skills/` | Tam |
-| **Gemini CLI** | `~/.config/gemini/` | AraÅŸtÄ±rÄ±lÄ±yor |
-| **Cursor** | `.cursor/rules/` (`.mdc`) | FarklÄ± format |
+| **Gemini CLI** | `~/.config/gemini/` | AraÃ…Å¸tÃ„Â±rÃ„Â±lÃ„Â±yor |
+| **Cursor** | `.cursor/rules/` (`.mdc`) | FarklÃ„Â± format |
 
 ---
 
 ## Lisans
 
-MIT -- detaylar iÃ§in [LICENSE](LICENSE) dosyasÄ±na bakÄ±n.
+MIT -- detaylar iÃƒÂ§in [LICENSE](LICENSE) dosyasÃ„Â±na bakÃ„Â±n.
 
 ---
 
 ## Topluluk
 
-- [Sorunlar](https://github.com/bayraktarozcan/AgentSynapse/issues) -- hatalar, Ã¶zellik talepleri, sorular.
-- [TartÄ±ÅŸmalar](https://github.com/bayraktarozcan/AgentSynapse/discussions) -- fikirler, vitrin, yardÄ±m.
+- [Sorunlar](https://github.com/bayraktarozcan/AgentSynapse/issues) -- hatalar, ÃƒÂ¶zellik talepleri, sorular.
+- [TartÃ„Â±Ã…Å¸malar](https://github.com/bayraktarozcan/AgentSynapse/discussions) -- fikirler, vitrin, yardÃ„Â±m.
 
-AI ajan topluluÄŸu iÃ§in Ã¼retilmiÅŸtir.
+AI ajan topluluÃ„Å¸u iÃƒÂ§in ÃƒÂ¼retilmiÃ…Å¸tir.
