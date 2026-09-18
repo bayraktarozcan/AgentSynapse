@@ -1,71 +1,46 @@
-﻿# GitLab Pages - mirrors GitHub Pages (docs/ on main).
-# Inert on GitHub (no runner reads this file here).
-# Images pinned by registry-verified digest (mirrors GitHub's digest-pinning
-# for CI determinism; digests re-verified against Docker Hub this session):
-#   alpine:3.21@sha256:48b0309ca019d89d40f670aa1bc06e426dc0931948452e8491e3d65087abc07d
-
-# --- CI intentionally INERT on GitLab ---
-# Owner pushes directly (no MR workflow); GitLab runner/2FA not provisioned.
-# Keep this file as the parity mirror of GitHub CI, but never create a
-# pipeline. Re-enable by removing this block and registering a runner.
+# GitLab CI - ACTIVE pipeline for AgentSynapse
+# Truth: badge image URLs are only trusted after live 200-SVG probes (see AGENTS.md).
+# Coverage is parsed by GitLab from the "Test Coverage:" line emitted by skills.py --check --profile.
 workflow:
   rules:
-    - when: never
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
 stages:
   - test
   - deploy
 
-# --- GitHub CI mirror: Python syntax (actions/workflows/ci.yml) ---
 skills-syntax:
   stage: test
-  image: python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
-  script:
+  image: python:3.12-slim
+  before_script:
     - python -m py_compile skills.py
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-# --- GitHub CI mirror: Dry-Run Validation (actions/workflows/ci.yml) ---
-skills-dry-run:
-  stage: test
-  image: python:3.12-slim@sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea
   script:
-    - python skills.py --dry-run
-    - python skills.py --dry-run trusted
-    - python skills.py --dry-run all
-    - python skills.py --dry-run K2
-    - python skills.py --dry-run K2 K4 K6
     - python skills.py --version
-    - python skills.py --help
     - python skills.py --list
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-# --- GitHub gitleaks mirror: secret scan (actions/workflows/gitleaks.yml) ---
-secrets:
+skills-profile-coverage:
   stage: test
-  image: zricethezav/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+  image: python:3.12-slim
+  before_script:
+    - python -m py_compile skills.py
   script:
-    - gitleaks detect --source . --no-banner --redact --verbose
+    - python skills.py --check --profile temel
+    - python skills.py --check --profile hepsi
+  coverage: '/Test Coverage: (\d+)%/'
+  artifacts:
+    paths:
+      - coverage.xml
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
-# --- GitHub link-check mirror: lychee (actions/workflows/link-check.yml) ---
-link-check:
-  stage: test
-  image: lycheeverse/lychee:0.24.2@sha256:e2d19e57cf6ab037026f20b8e449a1f30d9d7f81eef4194763aab2eab20bd28d
-  script:
-    - lychee --no-progress --verbose --max-retries 2 --exclude '^file://' './**/*.md'
-  rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-
-# GitLab Pages - copy docs/ to public/ (GitLab's Pages convention).
 pages:
   stage: deploy
-  image: alpine:3.21@sha256:48b0309ca019d89d40f670aa1bc06e426dc0931948452e8491e3d65087abc07d
+  image: alpine:3.21
   script:
     - mkdir -p public
-    - cp -r docs/. public/
+    - cp -r docs/* public/
   artifacts:
     paths:
       - public
