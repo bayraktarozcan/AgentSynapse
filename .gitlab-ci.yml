@@ -1,6 +1,6 @@
 # GitLab CI - ACTIVE pipeline for AgentSynapse
 # Truth: badge image URLs are only trusted after live 200-SVG probes (see AGENTS.md).
-# Coverage is parsed by GitLab from the "Test Coverage:" line emitted by skills.py --check --profile.
+# Valid profiles: temel, dengeli, tam.
 workflow:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
@@ -27,11 +27,7 @@ skills-profile-coverage:
     - python -m py_compile skills.py
   script:
     - python skills.py --check --profile temel
-    - python skills.py --check --profile hepsi
-  coverage: '/Test Coverage: (\d+)%/'
-  artifacts:
-    paths:
-      - coverage.xml
+    - python skills.py --check --profile tam
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
