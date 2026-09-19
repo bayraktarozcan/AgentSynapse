@@ -136,7 +136,7 @@ Koduna göre belirli bir kategoriyi yükleyin:
 | Argüman | Kategori | Depo |
 |---------|----------|:----:|
 | `K1` | Temel | 5 |
-| `K2` | AI & DBM | 9 |
+| `K2` | AI & LLM | 9 |
 | `K3` | Bulut & Arka Uç | 11 |
 | `K4` | Ön Yüz & Arayüz | 8 |
 | `K5` | Mobil | 1 |

@@ -8,7 +8,7 @@
 
 Welcome to the **AgentSynapse** wiki.
 
-This project aggregates **560+ SKILL.md files** (Recommended profile) from **34 top-tier repositories** across **10 functional categories** (K1–K10). It provides a unified, cross-platform Python installer (`skills.py`) that clones all repos, extracts every SKILL.md, deduplicates, and organizes them into `~/.agents/skills/` — ready for discovery by Claude Code, OpenCode, Cursor, and any agent that reads the standard SKILL.md format.
+This project aggregates **~566 SKILL.md files** (Recommended profile) from **34 top-tier repositories** across **10 functional categories** (K1–K10). It provides a unified, cross-platform Python installer (`skills.py`) that clones all repos, extracts every SKILL.md, deduplicates, and organizes them into `~/.agents/skills/` — ready for discovery by Claude Code, OpenCode, Cursor, and any agent that reads the standard SKILL.md format.
 
 ### Quick Start
 
@@ -53,7 +53,7 @@ That's it. The recommended profile installs ~566 skills from 34 curated repos.
 
 **Agent Beceri Projesi** wiki'sine hoş geldiniz.
 
-Bu proje, **34 üst düzey depodan 560+ SKILL.md dosyasını** **10 işlevsel kategoride** (K1–K10) toplar. Tek bir platformlar arası Python yükleyici (`skills.py`) ile tüm repoları klonlar, her SKILL.md'yi çıkarır, tekilleştirir ve `~/.agents/skills/` altına düzenler — Claude Code, OpenCode, Cursor ve SKILL.md formatını okuyan her ajan tarafından keşfedilmeye hazır.
+Bu proje, **34 üst düzey depodan ~566 SKILL.md dosyasını** **10 işlevsel kategoride** (K1–K10) toplar. Tek bir platformlar arası Python yükleyici (`skills.py`) ile tüm repoları klonlar, her SKILL.md'yi çıkarır, tekilleştirir ve `~/.agents/skills/` altına düzenler — Claude Code, OpenCode, Cursor ve SKILL.md formatını okuyan her ajan tarafından keşfedilmeye hazır.
 
 ### Hızlı Başlangıç
 

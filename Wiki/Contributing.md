@@ -14,7 +14,7 @@ If you know a repository that contains useful `SKILL.md` files for AI agents, op
 
 ### Step-by-step
 
-1. **Find the right category** in the `REPOS` dict inside `skills.py` (lines ~182–353). Categories are K1–K10.
+1. **Find the right category** in the `REPOS` dict inside `skills.py` (lines 301–437). Categories are K1–K10.
 2. **Add your repo entry** to the `repos` list of that category:
 
 ```python
@@ -118,7 +118,7 @@ AI ajanları için yararlı `SKILL.md` dosyaları içeren bir depo biliyorsanız
 
 ### Adım adım
 
-1. **Doğru kategoriyi bulun**: `skills.py` içindeki `REPOS` sözlüğünde (satır ~182–353). Kategoriler K1–K10'dur.
+1. **Doğru kategoriyi bulun**: `skills.py` içindeki `REPOS` sözlüğünde (satır 301–437). Kategoriler K1–K10'dur.
 2. **Depo girişinizi ekleyin** o kategorinin `repos` listesine:
 
 ```python

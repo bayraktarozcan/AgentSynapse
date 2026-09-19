@@ -142,7 +142,7 @@ Beceriler 10 işlevsel kategoride (K1–K10) düzenlenmiştir. Her kategori, yaz
 | Kod | Kategori | Depo | Güven | Açıklama |
 |-----|----------|------|:-----:|----------|
 | K1 | Temel | 5 | ✅ | Diller, araçlar, kod kalitesi, mimari |
-| K2 | AI & DBM | 9 | ✅ | AI ajanları, DBM çerçeveleri, prompt mühendisliği, RAG |
+| K2 | AI & LLM | 9 | ✅ | AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG |
 | K3 | Bulut & Arka Uç | 11 | ✅ | Bulut platformları, veritabanları, arka uç servisleri |
 | K4 | Ön Yüz & Arayüz | 8 | ✅ | UI çerçeveleri, tasarım sistemleri, görsel araçlar |
 | K5 | Mobil | 1 | ✅ | iOS, Android, React Native, Expo |
@@ -163,8 +163,8 @@ Genel geliştirme, diller, araçlar, kod kalitesi ve mimari en iyi uygulamalar.
 | [obra/superpowers](https://github.com/obra/superpowers) | Ajan süper güçleri ve genişletilmiş yetenekler |
 | [multica-ai/andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpathy-skills) | Karpathy'nin geliştirme yönergeleri |
 
-### K2 — AI & DBM (9 depo)
-AI ajanları, DBM çerçeveleri, prompt mühendisliği, RAG, vektör arama ve tarayıcı otomasyonu.
+### K2 — AI & LLM (9 depo)
+AI ajanları, LLM çerçeveleri, prompt mühendisliği, RAG, vektör arama ve tarayıcı otomasyonu.
 
 | Depo | Açıklama | Önerilen |
 |------|----------|:--------:|

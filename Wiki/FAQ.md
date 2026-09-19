@@ -14,7 +14,7 @@ The first run clones 34–48 repositories (depends on profile). This typically t
 
 ### Where are skills installed?
 
-All skills are installed to `~/.agents/skills/`. Each source repository gets its own subdirectory named after the repo (e.g., `~/.agents/skills/anthropics-skills/`). This location is auto-discovered by:
+All skills are installed to `~/.agents/skills/`. Each skill gets its own subdirectory named after the skill (e.g., `~/.agents/skills/academic-paper-review/`). This location is auto-discovered by:
 
 - **Claude Code** — reads `~/.agents/skills/` by default
 - **OpenCode** — reads the same directory
@@ -33,11 +33,11 @@ rm -rf ~/.agents/skills
 rmdir /s %USERPROFILE%\.agents\skills
 ```
 
-Or remove individual subdirectories for repos you no longer need.
+Or remove individual subdirectories for skills you no longer need.
 
 ### Can I install to a different location?
 
-Not currently. The installer always writes to `~/.agents/skills/`. This is by design — all major agent tools expect skills in this location.
+Yes. Use `--prefix /path/to/custom/dir` to install to a custom directory instead of `~/.agents/skills/`. Without it, the installer writes to `~/.agents/skills/` (the default expected by Claude Code, OpenCode, and Cursor).
 
 ## Troubleshooting
 
@@ -79,7 +79,7 @@ The first run clones every repository from scratch. This is network-bound. Possi
 
 ### I see "Operation timed out" errors
 
-Some repositories may be large or slow to clone. The installer has a 120-second timeout per repo. If a repo consistently times out:
+Some repositories may be large or slow to clone. The installer retries each clone up to 3 times, with a 300-second timeout per clone attempt (sparse-checkout uses a 120-second timeout). If a repo consistently times out:
 - Check your internet connection
 - The repo may be temporarily unavailable (try again later)
 - Skip that repo by choosing a more specific category
@@ -115,7 +115,7 @@ Each repository is placed into a category based on its primary function. Criteri
 
 ### What Python version is required?
 
-Python 3.9 or later. The installer uses `from __future__ import annotations` and `pathlib.Path`, which are stable in 3.9+.
+Python 3.8 or later. The installer uses `from __future__ import annotations` and `pathlib.Path`, which are stable in 3.8+.
 
 ### Does it work on Windows / macOS / Linux?
 
@@ -128,14 +128,14 @@ Yes. The installer is tested on:
 
 1. Reads the embedded `REPOS` registry (48 repos across 10 categories)
 2. Filters repos based on the requested profile or category
-3. For each repo: clones it to a temp directory, finds `SKILL.md` files, copies them to `~/.agents/skills/<repo-name>/`, cleans up temp files
-4. Fixes invalid directory names (spaces → hyphens, dots → underscores)
-5. Deduplicates — if two repos ship the same skill filename, the higher-category version wins
+3. For each repo: clones it to a temp directory, finds `SKILL.md` files, copies them to `~/.agents/skills/<name>/`, cleans up temp files
+4. Fixes invalid skill names (spaces and underscores become hyphens; other invalid characters are removed)
+5. Deduplicates — if two repos ship the same skill name, the higher-category version wins
 6. Saves a timestamped log and directory tree snapshot
 
 ### How are duplicates handled?
 
-When two repos contain a `SKILL.md` file with the same name, the one from the **higher category number** wins. For example, if both K2 (AI & LLM) and K4 (Frontend) have `react-skills.md`, the K4 version is kept because 4 > 2.
+When two repos contain a `SKILL.md` file with the same skill name, the one from the **higher category number** wins. For example, if both K2 (AI & LLM) and K4 (Frontend & UI) ship a skill named `react-skills`, the K4 version is kept because 4 > 2.
 
 ### Where are logs and tree files saved?
 
@@ -157,7 +157,7 @@ These are timestamped to the second, so every run produces unique files.
 
 ### Beceriler nereye yüklenir?
 
-Tüm beceriler `~/.agents/skills/` klasörüne yüklenir. Her kaynak depo, repo adıyla kendi alt klasörünü alır (örn. `~/.agents/skills/anthropics-skills/`). Bu konum aşağıdakiler tarafından otomatik olarak keşfedilir:
+Tüm beceriler `~/.agents/skills/` klasörüne yüklenir. Her beceri, beceri adıyla kendi alt klasörünü alır (örn. `~/.agents/skills/academic-paper-review/`). Bu konum aşağıdakiler tarafından otomatik olarak keşfedilir:
 
 - **Claude Code** — varsayılan olarak `~/.agents/skills/` okur
 - **OpenCode** — aynı dizini okur
@@ -176,11 +176,11 @@ rm -rf ~/.agents/skills
 rmdir /s %USERPROFILE%\.agents\skills
 ```
 
-Veya artık ihtiyacınız olmayan bireysel alt klasörleri kaldırın.
+Veya artık ihtiyacınız olmayan bireysel beceri klasörlerini kaldırın.
 
 ### Farklı bir konuma yükleyebilir miyim?
 
-Şu anda hayır. Yükleyici her zaman `~/.agents/skills/` konumuna yazar. Bu bilinçli bir tasarım kararıdır — tüm büyük ajan araçları becerileri bu konumda bekler.
+Evet. `~/.agents/skills/` yerine özel bir dizine yüklemek için `--prefix /ozel/dizin/yolu` kullanın. Bu bayrak olmadan yükleyici, Claude Code, OpenCode ve Cursor'ın beklediği varsayılan konum olan `~/.agents/skills/` klasörüne yazar.
 
 ## Sorun Giderme
 
@@ -222,7 +222,7 @@ git --version
 
 ### "İşlem zaman aşımına uğradı" hatası görüyorum
 
-Bazı depolar büyük veya klonlaması yavaş olabilir. Yükleyicinin depo başına 120 saniyelik bir zaman aşımı vardır. Bir depo sürekli zaman aşımına uğrarsa:
+Bazı depolar büyük veya klonlaması yavaş olabilir. Yükleyici, klon başına 300 saniyelik zaman aşımı ile her depoyu en fazla 3 kez dener (sparse-checkout 120 saniyelik zaman aşımı kullanır). Bir depo sürekli zaman aşımına uğrarsa:
 - İnternet bağlantınızı kontrol edin
 - Depo geçici olarak kullanılamıyor olabilir (daha sonra tekrar deneyin)
 - Daha spesifik bir kategori seçerek bu depoyu atlayın
@@ -258,7 +258,7 @@ Her depo, birincil işlevine göre bir kategoriye yerleştirilir. Kriterler şun
 
 ### Hangi Python sürümü gerekli?
 
-Python 3.9 veya üstü. Yükleyici `from __future__ import annotations` ve `pathlib.Path` kullanır; bunlar 3.9+'da kararlıdır.
+Python 3.8 veya üstü. Yükleyici `from __future__ import annotations` ve `pathlib.Path` kullanır; bunlar 3.8+'da kararlıdır.
 
 ### Windows / macOS / Linux'ta çalışır mı?
 
@@ -271,19 +271,19 @@ Evet. Yükleyici aşağıdakilerde test edilmiştir:
 
 1. Gömülü `REPOS` kaydını okur (10 kategoride 48 depo)
 2. İstenen profile veya kategoriye göre depoları filtreler
-3. Her depo için: geçici bir dizine klonlar, `SKILL.md` dosyalarını bulur, `~/.agents/skills/<depo-adi>/` konumuna kopyalar, geçici dosyaları temizler
-4. Geçersiz dizin adlarını düzeltir (boşluklar → tireler, noktalar → alt çizgiler)
-5. Tekilleştirir — iki depo aynı beceri dosya adını gönderirse, yüksek kategori numarasına sahip olan kazanır
+3. Her depo için: geçici bir dizine klonlar, `SKILL.md` dosyalarını bulur, `~/.agents/skills/<adi>/` konumuna kopyalar, geçici dosyaları temizler
+4. Geçersiz beceri adlarını düzeltir (boşluklar ve alt çizgiler tirelere dönüşür; diğer geçersiz karakterler kaldırılır)
+5. Tekilleştirir — iki depo aynı beceri adını gönderirse, yüksek kategori numarasına sahip olan kazanır
 6. Zaman damgalı bir günlük ve dizin ağacı görüntüsü kaydeder
 
 ### Yinelenenler nasıl ele alınıyor?
 
-İki depo aynı ada sahip bir `SKILL.md` dosyası içerdiğinde, **daha yüksek kategori numarasına** sahip olan kazanır. Örneğin, hem K2 (AI & DBM) hem de K4 (Ön Yüz) `react-skills.md` içeriyorsa, 4 > 2 olduğu için K4 sürümü korunur.
+İki depo aynı beceri adına sahip bir `SKILL.md` dosyası içerdiğinde, **daha yüksek kategori numarasına** sahip olan kazanır. Örneğin, hem K2 (AI & LLM) hem de K4 (Ön Yüz & Arayüz) `react-skills` adında bir beceri gönderirse, 4 > 2 olduğu için K4 sürümü korunur.
 
 ### Günlükler ve ağaç dosyaları nereye kaydediliyor?
 
 **Geçerli çalışma dizininizde** (`python skills.py` çalıştırdığınız yerde):
-- `Logs/skills-install_YYYY-AA-GG_SS-DD-SN.log` — ayrıntılı kurulum günlüğü
-- `skills-tree_YYYY-AA-GG_SS-DD-SN.txt` — `~/.agents/` dizin ağacı
+- `Logs/skills-install_YYYY-MM-DD_HH-MM-SS.log` — ayrıntılı kurulum günlüğü
+- `skills-tree_YYYY-MM-DD_HH-MM-SS.txt` — `~/.agents/` dizin ağacı
 
 Bunlar saniyeye kadar zaman damgalıdır, böylece her çalıştırma benzersiz dosyalar üretir.

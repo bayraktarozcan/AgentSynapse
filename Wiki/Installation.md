@@ -10,7 +10,7 @@
 
 | Requirement | Check command | Notes |
 |-------------|---------------|-------|
-| Python 3.9+ | `python --version` | If not installed, download from [python.org](https://python.org) |
+| Python 3.8+ | `python --version` | If not installed, download from [python.org](https://python.org) |
 | Git | `git --version` | If not installed, download from [git-scm.com](https://git-scm.com) |
 | tkinter (optional) | — | Needed only for `--gui` mode. Included with Python on Windows & macOS. Linux: `sudo apt install python3-tk` |
 
@@ -139,7 +139,7 @@ The installer automatically handles common issues:
 
 | Issue | Handling |
 |-------|----------|
-| Git not found | Searches common paths (`C:\Program Files\Git\bin\git.exe`, `/usr/local/bin/git`, etc.); shows OS-specific install hint (`apt install git`, `brew install git`, `winget install Git.Git`) |
+| Git not found | Searches common paths (`C:\Program Files\Git\cmd\git.exe`, `/usr/local/bin/git`, etc.); shows OS-specific install hint (`apt install git`, `brew install git`, `winget install Git.Git`) |
 | Clone failure | Auto-retries up to 3 times with 2-second delay |
 | Permission denied | Auto-creates `~/.agents/skills/` with `mkdir -p` equivalent |
 | Skills directory exists | Safe re-install; deduplicates correctly |
@@ -173,7 +173,7 @@ Each subdirectory should contain at least one `SKILL.md` file.
 
 | Gereksinim | Kontrol komutu | Notlar |
 |------------|----------------|--------|
-| Python 3.9+ | `python --version` | Yüklü değilse [python.org](https://python.org) adresinden indirin |
+| Python 3.8+ | `python --version` | Yüklü değilse [python.org](https://python.org) adresinden indirin |
 | Git | `git --version` | Yüklü değilse [git-scm.com](https://git-scm.com) adresinden indirin |
 | tkinter (isteğe bağlı) | — | Yalnızca `--gui` modu için gerekli. Windows ve macOS'ta Python ile gelir. Linux: `sudo apt install python3-tk` |
 
@@ -201,7 +201,7 @@ Bu, **önerilen** profili (34 depo, ~566 beceri) yükler. Çıktı `~/.agents/sk
 | `python skills.py` | Önerilen — küratörlü alt küme | 34 | ~566 |
 | `python skills.py guvenli` | Tüm güvenli (K1–K8) | 39 | ~640 |
 | `python skills.py tumu` | Her şey (K1–K10) | 48 | ~995 |
-| `python skills.py K2` | Tek kategori (AI & DBM) | 9 | değişir |
+| `python skills.py K2` | Tek kategori (AI & LLM) | 9 | değişir |
 | `python skills.py K1 K3 K5` | Birden çok kategori | değişir | değişir |
 
 ### Türkçe Alias'lar
@@ -302,7 +302,7 @@ Yükleyici, yaygın sorunları otomatik olarak yönetir:
 
 | Sorun | Yönetim |
 |-------|---------|
-| Git bulunamadı | Yaygın yolları arar (`C:\Program Files\Git\bin\git.exe`, `/usr/local/bin/git`, vb.); işletim sistemine özel kurulum ipucu gösterir (`apt install git`, `brew install git`, `winget install Git.Git`) |
+| Git bulunamadı | Yaygın yolları arar (`C:\Program Files\Git\cmd\git.exe`, `/usr/local/bin/git`, vb.); işletim sistemine özel kurulum ipucu gösterir (`apt install git`, `brew install git`, `winget install Git.Git`) |
 | Klonlama hatası | 2 saniye gecikmeyle 3 kez otomatik dener |
 | İzin reddedildi | `~/.agents/skills/` otomatik oluşturulur |
 | Beceriler dizini mevcut | Güvenli yeniden kurulum; tekrarlar doğru şekilde temizlenir |
@@ -314,8 +314,8 @@ Tüm oluşturulan dosyalar **geçerli çalışma dizininizde** (`skills.py`'yi �
 
 | Dosya | Açıklama |
 |-------|----------|
-| `Logs/skills-install_YYYY-AA-GG_SS-DD-SN.log` | Zaman damgalı tam kurulum günlüğü, hatalar ve uyarılar |
-| `skills-tree_YYYY-AA-GG_SS-DD-SN.txt` | `~/.agents/` klasör yapısını gösteren ağaç görünümü |
+| `Logs/skills-install_YYYY-MM-DD_HH-MM-SS.log` | Zaman damgalı tam kurulum günlüğü, hatalar ve uyarılar |
+| `skills-tree_YYYY-MM-DD_HH-MM-SS.txt` | `~/.agents/` klasör yapısını gösteren ağaç görünümü |
 
 ### Doğrulama
 
