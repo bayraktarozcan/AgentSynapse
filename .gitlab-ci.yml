@@ -34,6 +34,8 @@ skills-profile-coverage:
 skills-encoding:
   stage: test
   image: python:3.12-slim
+  before_script:
+    - apt-get update && apt-get install -y --no-install-recommends git
   script:
     - python scripts/check_encoding.py --selftest
     - python scripts/check_encoding.py --commits "$CI_COMMIT_BEFORE_SHA..$CI_COMMIT_SHA"
