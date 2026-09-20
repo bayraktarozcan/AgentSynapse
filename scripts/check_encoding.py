@@ -17,7 +17,7 @@ The double-encoding signature is purely byte-structural and ASCII-safe:
   * a 3-byte UTF-8 char (E0-EF 80-BF 80-BF) misread as latin-1 leaves
     U+00E0..U+00EF followed by two chars in U+0080..U+00BF
 
-Only these exact structural pairs are flagged (e.g. the text "Ã§" -- literally
+Only these exact structural pairs are flagged (e.g. the text "{escaped}" -- literally
 U+00C3 U+00A7 -- which is the double-encoded form of "c"). Genuine text that
 merely contains a latin-1 letter such as "C" or "e" is not affected. To avoid
 false positives from various spellings, only decoded text that already is valid
@@ -204,8 +204,8 @@ def selftest() -> int:
         (b"plain ascii text\n", True),
         (b"T\xc3\xbcrk\xc3\xa7e \xc3\xb6z\xc3\xbcr\n", True),   # valid utf-8
         (b"caf\xc3\xa9 menu\n", True),                            # valid utf-8
-        ("\u00c3\u00a7\u00c3\u00b6".encode("utf-8"), False),      # "Ã§Ã¶" = mojibake
-        ("d\u00c3\u00bcnya".encode("utf-8"), False),              # "dÃ¼nya"
+        ("\u00c3\u00a7\u00c3\u00b6".encode("utf-8"), False),      # U+00C3 U+00A7 U+00C3 U+00B6 = mojibake
+        ("d\u00c3\u00bcnya".encode("utf-8"), False),               # d U+00C3 U+00BC nya = mojibake
         ("\u00e2\u0080\u0099ti".encode("utf-8"), False),          # 3-byte sig
         (b"\xff\xfe\x00\xd8junk", False),                         # invalid utf-8
     ]
